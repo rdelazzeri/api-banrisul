@@ -1,0 +1,3011 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Cobrança",
+    "version": "1.0.0",
+    "description": "# Introdução\nBem-vindo à documentação de APIs do Banrisul.\n\nSomos um banco com quase um século de história, que trabalha ativamente em busca de novas soluções para melhor atender nossos clientes e parceiros. Fique por dentro! Acompanhe as novidades e descubra todas as funcionalidades das nossas APIs.\n\nEm nosso Portal de Desenvolvedores, você encontra todas as informações relacionadas ao funcionamento e uso das APIs do Banrisul. Estamos atualizando constantemente este material, para facilitar seu entendimento e acelerar a integração dos nossos parceiros.\n\nConheça as vantagens de ter o Banrisul ao seu lado. Fale conosco e torne-se um Parceiro de Negócios.\n\n**Banrisul - Nossa parceria faz a diferença!** \n\n# Explore nossas APIs\nInformações gerais sobre as APIs do Banrisul. Como começar, materiais de apoio, especificações técnicas, dicas e muito mais. \n\n## Primeiros Passos\n\n\n1. [Solicite seu acesso ao Portal de Desenvolvedores](#section/Explore-nossas-APIs/Acesso-ao-Portal)\n2. [Crie sua primeira Aplicação](#section/Seguranca/Criando-uma-Aplicacao)\n3. [Gere as Credenciais de Acesso para a API](#section/Seguranca/Criando-uma-Aplicacao)\n4. [Prepare seu Ambiente de Desenvolvimento](#section/Testes)\n5. [Obtenha o token de Autorização Oauth2](#section/Seguranca/Tokens-de-Acesso)\n6. [Teste as chamadas para as APIs](#section/Seguranca/Chamadas-Autenticadas)\n7. [Valide a sua Aplicação](#section/Explore-nossas-APIs/Suporte)\n8. Leve sua Aplicação para o ambiente de Produção\n\n\nCada API possui sua própria documentação. Navegue pelos links, busca ou menu lateral, diretamente para a parte desejada na documentação, incluindo exemplos e tutoriais.\n\nAlém disso, você também pode baixar uma collection de testes pronta para executar no Postman ou ferramenta de sua preferência, com exemplos de chamadas.  Assim, você conhece na prática a estrutura das chamadas e respostas das APIs, já disponíveis pela nossa Plataforma de Parceiros. \n\n## Acesso ao Portal\nEm sua primeira integração, recomendamos o fluxo abaixo:\n\n![Fluxo Acesso ao Portal](https://banrisulfordevelopers.s3.sa-east-1.amazonaws.com/static/docs/boletos/Boletos-Fluxo-Acesso-Portal.png)\n\nComo primeiro passo, recomenda-se a leitura da documentação disponível da API que você deseja consumir para entendimento das configurações necessárias para sua integração. A documentação está disponível na página inicial do Portal de Desenvolvedores.\n\nApós a leitura, você deve solicitar o seu login de acesso e credenciais pelo e-mail [atendimento_teste_cobranca@banrisul.com.br](mailto:atendimento_teste_cobranca@banrisul.com.br). A partir do seu cadastro, você receberá as orientações por e-mail para o seu primeiro acesso ao ambiente SandBox do Portal. O fluxo de solicitação deve ser refeito para o acesso ao ambiente de Produção.\n\n**Ambiente de Teste:** a utilização do ambiente SandBox não é obrigatória, contudo, é altamente recomendável para a configuração de sua integração e entendimento do funcionamento da nossa API. No nosso ambiente de SandBox você poderá simular requisições e retornos para diferentes cenários. Neste ambiente ainda não há necessidade de você possuir um Convênio de Cobrança ativo, sendo utilizado convênios fictícios para os testes.\n\n**Ambiente de Produção:** após configurar sua integração e testar os cenários utilizados pela sua organização, você poderá acessar o ambiente de produção para homologar sua API. Nesta etapa é imprescindível que você possua um Convênio de Cobrança (Código de Beneficiário) ativo que será utilizado nas requisições. Caso você ainda não possua este Convênio, procure sua agência Banrisul de relacionamento e solicite.\n\n**Homologação:** na sua primeira chamada em produção você deve informar o conteúdo `\"T\"` no atributo `\"ambiente\"` do payload de entrada. Este procedimento deve ser feito apenas no EndPoint de registro, a fim de homologar sua API, não sendo necessário nos demais EndPoints. Após sua homologação, você deve enviar cinco requisições e retornos de sucesso e os respectivos boletos em formato PDF para o e-mail [atendimento_teste_cobranca@banrisul.com.br](mailto:atendimento_teste_cobranca@banrisul.com.br) para conferência.\n\nA conferência do boleto visa garantir que não haja campos fora do padrão ou informações equivocadamente apresentadas. Caso os boletos estejam em conformidade, você será liberado para operar em produção. As regras para confecção do boleto estão disponíveis na seção [Leiaute de Boletos](#section/Leiaute-de-Boletos). \n\n## Melhores Práticas\nVisando oferecer as melhores soluções digitais para nossos clientes e parceiros, o Banrisul segue inovando, sempre atento aos padrões de mercado internacionais e aderente às convenções de melhores práticas para desenvolvimento e uso de APIs.\n\n**Aqui você encontra algumas definições que norteiam o desenvolvimento das APIs do Banrisul:** \n\n### Segurança\nNossos ambientes e APIs passam por testes rigorosos, sempre observando todos os critérios e recomendações de segurança, esperados de um ambiente bancário. O Banrisul preza muito pela sua segurança e privacidade ao utilizar nossas soluções digitais. \n\n### HTTPS\nToda a comunicação com as nossas APIs é segura, criptografada de ponta-a-ponta, através de HTTPS e certificados SSL. É vedada a utilização de protocolos inseguros.\n\nVerifique suas chamadas para começarem sempre por `'https://'`. \n\n### RESTful\nNossas APIs são aderentes ao conceito RESTful. Consulte a documentação de cada API e verifique a utilização dos serviços, rotas, verbos e parâmetros de cada endpoint. \n\n### Encoding\nUtilizamos o padrão de codificação de conteúdo `'UTF-8'`.\n\nCaso você venha a ter algum problema com acentos ou caracteres especiais, sendo substituídos por outros símbolos, verifique a correta utilização do Encoding para UTF-8. \n\n### JSON\nAs nossas APIs seguem o padrão de estruturação de dados em formato JSON.\n\nTodas as chamadas devem conter o cabeçalho de requisição: `'Accept: application/json'`.\n\nTodas as chamadas do tipo POST, que enviam um payload de dados, devem conter também o cabeçalho `'Content-Type: application/json'` na requisição.\n\nTodos os retornos das chamadas, terão o seguinte cabeçalho de resposta: `'Content-Type: application/json;charset=utf-8'`. \n\n### Otimização de Payloads\nQuando você implementar sua aplicação, garanta que ela suporte respostas em formato \"gzipped\", para garantir um melhor desempenho na transmissão de dados e experiência dos seus clientes.\n\n\nInclua sempre o seguinte cabeçalho nas suas requisições: `'Accept-Encoding: gzip'` \n\n## Suporte\n\nCaso você encontre dificuldades ou tenha alguma pergunta, por favor, verifique os seguintes canais de atendimento:\n\n- [Documentação da API](#tag/boletos)\n\n- [FAQ - Perguntas Frequentes](#section/Duvidas-Comuns/Perguntas-Frequentes)\n\n- [Atendimento Teste Cobrança Banrisul](mailto:atendimento_teste_cobranca@banrisul.com.br)\n\n**Nossa equipe preza pela sua experiência de integração e todo feedback é bem-vindo.**\n\nNo caso de dúvidas ou sugestões sobre a documentação, [fale conosco.](mailto:atendimento_teste_cobranca@banrisul.com.br) \n\n## Novidades\nMantenha-se sempre atualizado sobre as novidades do Banrisul, estamos inovando nossos serviços continuamente.\n- Acompanhe o Banrisul nas redes sociais: [Twitter](https://twitter.com/banrisul), [Facebook](https://www.facebook.com/Banrisul), [Instagram](https://www.instagram.com/banrisul), [Youtube](https://www.youtube.com/user/bancobanrisul).\n\n- Saiba mais sobre o Banrisul, acesse nosso [Portal Institucional](https://www.banrisul.com.br).\n\n- Informações sobre **Open Banking e APIs para Parceiros**, você encontra no portal [Banrisul for Developers](https://developersdev.banrisul.com.br).\n\nFique a vontade para escolher o canal de sua preferência. \n\n\n# Segurança\n\nInformações gerais sobre a segurança das APIs do Banrisul. Fluxo de autenticação e autorização das chamadas, geração de tokens, especificações técnicas e muito mais. \n\n## OAuth v2.0\nO Banrisul segue os padrões de mercado e recomenda a utilização do padrão de segurança OAuth2 para autenticação e autorização das chamadas às APIs.\n\n Atualmente o OAuth2 é suportado em todos os nossos ambientes, de forma a facilitar o desenvolvimento e reduzir o atrito ao levar a aplicação para produção. Isso torna transparente a virada de chaves para o ambiente produtivo, sendo necessária apenas a criação das novas chaves de acesso.\n\nApós o seu cadastro e ativação de conta no Portal de Desenvolvedores, você poderá criar a sua primeira Aplicação, escolher as APIs que quer utilizar e gerar as credenciais de acesso para realizar a autenticação no nosso ambiente.\n\n\nCom as credenciais geradas, você precisará realizar uma chamada de Autenticação no serviço OAuth2, para receber um token de acesso. Este token será utilizado na chamada para a API, devendo ser informado no cabeçalho, para que seja feita a Autorização do acesso.\n\n**O Fluxo OAuth2 utilizado é o Client Credentials.**\n\nPara realizar uma chamada de API, primerio você precisa seguir estes passos:\n1.  Criar uma \"Application\" no Portal de Desenvolvedores\n2.  Associar as APIs que deseja utilizar\n3.  Gerar as credenciais de acesso da sua Application\n4.  Realizar uma chamada para o serviço OAuth2 informando as credenciais, para receber um token de acesso.\n5.  Chamar a API desejada, informando o token de acesso obtido. Você pode reaproveitar o token para fazer múltiplas chamadas. \n\n## Criando uma Aplicação\n**Esta etapa precisa ser realizada apenas uma vez.**\n\nAo acessar o Portal de Desenvolvedores, você vai poder criar uma nova aplicação na opção **`\"Application\"`**, basta informar um nome para ela, as APIs que deseja utilizar e dar o aceite nos termos de uso.\n\nAo criar a aplicação, você irá receber um par de chaves `Client ID` e `Client Secret`, copie e guarde essas informações pois elas serão necessárias no próximo passo. \n\n## Tokens de Acesso\nCom a sua primeira aplicação criada, você precisa fazer agora uma chamada para obter um **`\"Bearer Token\"`** utilizando suas credenciais. Este chamada é do tipo `POST` e requer os seguintes parâmetros:\n\n-   `client_id` - a Client ID que você recebeu ao criar a sua aplicação\n-   `client_secret` - a Client Secret que você recebeu ao criar a sua aplicação\n-   `grant_type` - informar no corpo da requisição o valor padrão: **`client_credentials`**\n\n**Serviço OAuth2**: verifique a URL base para a geração de Tokens na seção [Authentication](#section/Authentication) deste documento.\n\nA resposta da chamada acima, retorna um Token gerado com a seguinte estrutura em JSON:\n-   `access_token` - o seu Token de Acesso válido\n-   `token_type` - o tipo de Token, neste caso vai ser sempre: `\"Bearer\"`\n-   `expires_in` - o tempo de expiração do Token, em segundos.  Valor padrão: `3600`\n-   `scope` - escopos associados, conforme configurações e APIs selecionadas para sua aplicação.\n\n\n Este token de acesso que lhe foi gerado, especifica por quanto tempo ele é válido e você pode **fazer múltiplas chamadas utilizando o mesmo token**, dentro deste período de **vida útil**. \n\n## Chamadas Autenticadas\nTodas as chamadas devem ser autenticadas e para isso, é necessário informar um **\"Bearer Token\"** válido no cabeçalho HTTP de cada requisição:\n\n**`'Authorization: Bearer TOKEN_OAUTH2'`**\n\nExemplo com um Token OAuth2 fictício: `'Authorization: Bearer 1a2b7a37-3e7d-4cb3-b0e2-883de9e766cc'`\n\nVocê tem a opção de gerar um token por chamada, mas **recomendamos** o uso do Token durante toda a sua validade. Um Token válido permite a **realização de múltiplas chamadas** até que ele expire.\n\nQuando o token expirar, você receberá um retorno com `'Status Code 401: Unauthorized'`, alegando falha na autenticação.\n\n\n Para seguir fazendo as requisições normalmente, basta fazer uma nova chamada ao serviço OAuth2 (conforme descrito no passo anterior) e gerar um novo token válido.\n\n Depois é só utilizá-lo nas requisições até que expire novamente, e assim por diante. \n\n## Gestão das Credenciais\n\n**OBSERVAÇÕES**\n\n- A Client ID e Client Secret mencionadas acima, funcionam por aplicação, ou seja, você pode ter mais de uma.\n\n- A gestão das credenciais é feita diretamente na sua conta no Portal de Desenvolvedores, na área das suas Aplicações.\n- Você pode solicitar novas chaves e/ou revogar chaves existentes a qualquer momento.\n- Escopos também podem ser adicionados nas configurações da aplicação. Caso você implementar perfis de acesso diferentes na sua aplicação.\n\nNo caso de dúvidas, entre em contato com nossa [equipe especializada](mailto:atendimento_teste_cobranca@banrisul.com.br). \n\n## Atenção Especial\n\n * **Fique atento aos golpes.**\n\n * **O Banrisul jamais irá solicitar que você nos informe alguma senha.**\n\n * Nunca repasse uma senha por mensagem, email, ligação, ou qualquer outra forma de suposto atendimento.\n\n * Saiba mais sobre a nossa [Política de Privacidade, Segurança e LGPD.](https://banrisul.com.br/) \n\n\n# Dúvidas Comuns\n\n## Status Codes\nTodas as APIs seguem o padrão e convenções de uso dos \"HTTP Status Codes\" nas respostas. Cada API apresenta na sua documentação, os possíveis códigos de retorno para as chamadas. Verifique as especificidades de cada endpoint.\n\nVisão geral das faixas de retorno:\n  - Status `200`: **Chamada processada com sucesso.**\n\n    Você vai receber o retorno que esperava para a consulta ou operação realizada.\n\n\n  - Status `400`: **Alguma validação de regras falhou.**\n\n    Você vai receber uma mensagem informativa sobre o que aconteceu. Os erros mais comuns são algum parâmetro faltando e erros de tipagem na conversão dos dados.\n\n\n  - Status `500`: **Erro no processamento ou indisponibilidade.**\n\n     Pode ser ocasionado por um erro de rede ou conexão, ou ainda, alguma indisponibilidade temporária de um serviço ou ambiente. \n\n## Validação de Contrato\n\nTodos os endpoints do tipo `POST` possuem uma validação nativa do contrato das APIs, que verifica o nome, obrigatoriedade, tipo e tamanho dos parâmetros enviados no payload da requisição.\n\nEssa validação é global e possui um caráter técnico, com o intuito de auxiliar o desenvolvedor na integração e envio correto dos parâmetros esperados.\n\nExemplo de retorno de violações de contrato em uma chamada:\n\n```json\n{\n  \"ocorrencias\": [\n    {\n      \"codigo\": \"00\",\n      \"mensagem\": \"PatternMismatch - O valor informado não atende o padrão: ^(P{1}|T{1})$. Caminho '#/ambiente', linha 2, posição 19\"\n    }\n  ]\n}\n``` \n\n## Perguntas Frequentes\n\n\nEm construção.\n\n**Em caso de dúvidas, [fale com a equipe especializada](mailto:atendimento_teste_cobranca@banrisul.com.br).** \n\n\n# Testes\nNossa documentação técnica oferece descrições detalhadas das estruturas de dados para chamadas e respostas das APIs. Além disso, disponibilizamos também exemplos de código em múltiplas linguagens de programação.\nPara facilitar o processo de integração, o Banrisul vai além e lhe oferece também uma collection de testes pronta, que você pode baixar e importar na ferramenta Postman.\n\nO processo é extremamente simples e você já terá um ótimo guia para ver as APIs em funcionamento. Ideal para conhecer na prática e entender o comportamento de cada API. \n\n## Exemplo via Postman\n\nExplore nossas APIs com a ferramenta [Postman](https://www.postman.com/downloads/), siga estes passos:\n1. Faça o download da nossa collection de exemplo para o Postman [aqui](https://banrisulfordevelopers.s3.sa-east-1.amazonaws.com/static/docs/boletos/API-Boletos-Banrisul-Postman.zip).\n\n    Clique com o botão direito no link acima e depois em \"Salvar link como...\"\n\n\n2. Entre no Postman e importe a collection.\n\n    No canto superior esquerdo, clique no botão \"Import\" e selecione o arquivo .json baixado no passo anterior.\n\n3. Você verá as chamadas em um painel lateral, na esquerda da ferramenta.\n\n    Agora você só precisa especificar suas [credencias de acesso](#section/Seguranca/Criando-uma-Aplicacao) nas definições da **chamada \"Gerar Token\"**.\n\n    Clique na aba \"Authorization\" e preencha os campos:\n\n    `\"Username\"`: informe a sua **client_id** de acesso\n\n    `\"Password\"`: informe a sua **client_secret** de acesso\n\n4. Realize a chamada, clicando em \"SEND\".\n\n    Verifique a resposta e o recebimento de um token de acesso **`\"access_token\"`**\n\n\n5. Fácil, não é mesmo? Selecione uma outra chamada para API e clique novamente em \"SEND\", o token será embutido no cabeçalho automaticamente pelo Postman.\n\nAgora é só explorar os demais exemplos, entender a APÌ e replicar as chamadas na sua aplicação. \n\n## Ambiente Sandbox\n\nAs URLs do ambiente de Produção e do ambiente do Sandbox são diferentes:\n\n- URL de Produção: https://api.banrisul.com.br/cobranca/v1/ \n\n- URL de Sandbox: https://apidev.banrisul.com.br/cobranca/v1/ \n\n\n**Sempre** tome cuidado quando for realizar testes para selecionar o ambiente desejado corretamente. No Sandbox da Cobrança do Banrisul é possível simular o resultado de todas as possibilidades de retorno nas chamadas de nossos serviços. Para acessar o Sandbox não será necessário realizar um cadastro para o beneficiário ainda, vinculando o ClientID, basta utilizar os códigos mencionados na documentação. Cada teste terá suas particularidades e sempre retornarão os mesmos resultados, conforme descrito aqui na documentação.\n\n \n\n### Beneficiário\n\nPara o Sandbox, foram definidos 6 beneficiários para testes. Para todos os serviços esses códigos de beneficiários terão o mesmo tratamento. São eles:\n- `0010000001088`: **Beneficiário OK**\n\n    Utilize esse código para os testes de sucesso no Sandbox.\n\n- `0010000027079`: **Beneficiário desativado**\n\n    Beneficiário que teve seu desligamento com o banco e não opera mais Cobrança.\n\n- `0001000000171`: **Beneficiário recém criado**\n\n    Beneficiário que teve seu cadastro/reativação na mesma data do registro do boleto.\n\n- `0001000000252`: **Beneficiário sem permissão**\n\n    Beneficiário válido e ativo, porém não possui cadastro liberando os serviços via API.\n\n- `0001000000333`: **Beneficiário inapto**\n\n    Beneficiário inapto para operar cobrança.\n\n- `0001000000414`: **Beneficiário inexistente**\n\n    Beneficiário não encontrado na base Banrisul. Para os demais códigos de beneficiários inseridos, retornarão sempre a mesma falha: **Beneficiário inexistente**.\n\nExemplo de chamadas de falha:\n\n**HEADERS**\n\n```json\n{\n  \"bergs-beneficiario\": \"0010000027079\"\n}\n```\n\n**RETORNO**\n\nHTTP Status Code: `404`\n\n```json\n{\n  \"ocorrencias\": [\n    {\n      \"codigo\": \"A6\",\n      \"mensagem\": \"Código do beneficiário inválido ou encerrado.\"\n    }\n  ]\n}\n```\n\n \n\n## Sandbox - Consultar Boleto\n\nAbaixo é possível verificar quais as alternativas de testes e alguns detalhes, de acordo com a informação definida. Os retornos de cada teste estão disponíveis na seção [GET Consultar Boleto](#operation/consultarBoletoId), em **Response samples** há um combo para selecionar o **Example** que deseja. Para todos os exemplos de sucesso no Sandbox é utilizado o código de beneficiário `0010000001088`. Cada exemplo pode ser recuperado através de 3 formas: nosso número, código de barras ou linha digitável. Independente da maneira escolhida, serão retornados os mesmos dados para cada boleto. E eles estão descritos abaixo:\n\n**Sem instruções: GET /boletos/264**\n\n- Nosso número: `264`\n\n- Código de barras: `04191861100000150502100100000010000000024047`\n\n- Linha digitável: `04192100180000001000900000240473186110000015050`\n\n    Exemplo de consulta de boleto sem nenhuma instrução atribuída. Retorna apenas os juros, pois é um campo obrigatório, mas informando que é isento.\n\n\n**Com juros e desconto: GET /boletos/38806**\n\n- Nosso número: `38806`\n\n- Código de barras: `04197861100000150502100100000010000003884071`\n\n- Linha digitável: `04192100180000001000900038840716786110000015050`\n\n    Exemplo de consulta de boleto com instruções de juros e desconto.\n\n\n**Com multa e abatimento: GET /boletos/6445438**\n\n- Nosso número: `6445438`\n\n- Código de barras: `04191861100000150502100100000010000644544009`\n\n- Linha digitável: `04192100180000001000906445440099186110000015050`\n\n    Exemplo de consulta de boleto com instruções de multa e abatimento.\n\n\n**Com mensagens: GET /boletos/6445675**\n\n- Nosso número: `6445675`\n\n- Código de barras: `04193861100000150502100100000010000644564050`\n\n- Linha digitável: `04192100180000001000906445640508386110000015050`\n\n    Exemplo de consulta de boleto com uma lista de mensagens.\n\n\n**Com rateio: GET /boletos/6445918**\n\n- Nosso número: `6445918`\n\n- Código de barras: `04191861100000150502100100000010000644594006`\n\n- Linha digitável: `04192100180000001000906445940064186110000015050`\n\n    Exemplo de consulta de boleto com informações sobre rateio.\n\n\n**Com operações e crédito retido: GET /boletos/740969**\n\n- Nosso número: `740969`\n\n- Código de barras: `04197851600000860002100100000010000074094047`\n\n- Linha digitável: `04192100180000001000900740940473785160000086000`\n\n    Exemplo de consulta de boleto com informações sobre operações e crédito retido.\n\n\n**Boleto proposta: GET /boletos/5938458377**\n\n- Nosso número: `5938458377`\n\n- Código de barras: `04191864700000000002100100000010593845834057`\n\n- Linha digitável: `04192100180000001059538458340577186470000000000`\n\n    Exemplo de consulta de boleto da espécie boleto proposta.\n\n\n**Cartão de crédito: GET /boletos/5899759526**\n\n- Nosso número: `5899759526`\n\n- Código de barras: `04191000000000000002100100000010589975954006`\n\n- Linha digitável: `04192100180000001058799759540067100000000000000`\n\n    Exemplo de consulta de boleto da espécie cartão de crédito.\n\n\n**Boleto devolvido: GET /boletos/5942970953**\n\n- Nosso número: `5942970953`\n\n- Código de barras: `04191884900000999992100100000010594297094038`\n\n- Linha digitável: `04192100180000001059542970940385188490000099999`\n\n    Exemplo de consulta de boleto devolvido.\n\n\n**Boleto liquidado: GET /boletos/7781**\n\n- Nosso número: `7781`\n\n- Código de barras: `04196802800008000002100100000010000000774062`\n\n- Linha digitável: `04192100180000001000900007740624680280000800000`\n\n    Exemplo de consulta de boleto liquidado.\n\n\n**Boleto baixado: GET /boletos/5885491547**\n\n- Nosso número: `5885491547`\n\n- Código de barras: `04196806500000126192100100000010588549154020`\n\n- Linha digitável: `04192100180000001058785491540200680650000012619`\n\n    Exemplo de consulta de boleto baixado por pagamento.\n\n\n**Boleto rejeitado na CIP: GET /boletos/5945744857**\n\n- Nosso número: `5945744857`\n\n- Código de barras: `04191887600002001002100100000010594574484035`\n\n- Linha digitável: `04192100180000001059545744840351188760000200100`\n\n    Exemplo de consulta de boleto rejeitado na Centralizadora Interbancária de Pagamentos.\n\n\n**Boleto carteira de desconto: GET /boletos/6109919037**\n\n- Nosso número: `6109919037`\n\n- Código de barras: `04194847400001920002100100000010610991904018`\n\n- Linha digitável: `04192100180000001061109919040189484740000192000`\n\n    Exemplo de consulta de boleto de carteira de desconto. \n\n## Sandbox - Registrar Boleto\n\nAbaixo é possível verificar quais as alternativas de testes e alguns detalhes, de acordo com a informação definida. Os retornos de cada teste estão disponíveis na seção [POST Registrar Boleto](#operation/registrarBoletoId), em **Response samples** há um combo para selecionar o **Example** que deseja. Para todos os exemplos de sucesso no Sandbox é utilizado o código de beneficiário `0010000001088`. E eles estão descritos abaixo:\n\n\n**Homologado sem nosso número**\n\n- Ambiente: `T`\n\n- Nosso número: ` ` (não informado)\n\n    Exemplo de registro de boleto homologado (`\"retorno\": \"04\"`), ou seja, quando o campo de entrada `\"ambiente\": \"T\"`. Nesse exemplo não é informado o campo `nosso_numero`, mas ele é preenchido no retorno. Tanto para o Sandbox quanto em Produção será sempre o mesmo número retornado: `0000000000`.\n\n\n**Homologado com nosso número**\n\n- Ambiente: `T`\n\n- Nosso número: `264`\n\n    Exemplo de registro de boleto homologado (`\"retorno\": \"04\"`), ou seja, quando o campo de entrada `\"ambiente\": \"T\"`.\n\n\n**Registrado sem nosso número**\n\n- Ambiente: `P`\n\n- Nosso número: ` ` (não informado)\n\n    Exemplo de registro de boleto centralizado com sucesso (`\"retorno\": \"02\"`), ou seja, boleto foi registrado tanto na base Banrisul quanto na base centralizada. Nesse exemplo não é informado o campo `nosso_numero`, mas ele é preenchido no retorno. No Sandbox será sempre o mesmo número gerado, mas em Produção irá gerar um número em sequência.\n\n\n**Registrado apenas Banrisul**\n\n- Ambiente: `P`\n\n- Nosso número: `264`\n\n    Exemplo de registro de boleto com sucesso apenas base Banrisul (`\"retorno\": \"01\"`), ou seja, significa que a comunicação com base a centralizada de títulos para pagamento interbancário está lenta e sua inclusão será realizada assim que a comunicação com o ambiente for restabelecida.\n\n\n**Com juros e desconto**\n\n- Ambiente: `P`\n\n- Nosso número: `38806`\n\n    Exemplo de registro de boleto centralizado com sucesso (`\"retorno\": \"02\"`) e com informações com instruções de juros e desconto.\n\n\n**Com multa e abatimento**\n\n- Ambiente: `P`\n\n- Nosso número: `6445438`\n\n    Exemplo de registro de boleto centralizado com sucesso (`\"retorno\": \"02\"`) e com informações com instruções de multa e abatimento.\n\n\n**Com mensagens**\n\n- Ambiente: `P`\n\n- Nosso número: `6445675`\n\n    Exemplo de registro de boleto centralizado com sucesso (`\"retorno\": \"02\"`) e com informações com uma lista de mensagens.\n\n\n**Com rateio**\n\n- Ambiente: `P`\n\n- Nosso número: `6445918`\n\n    Exemplo de registro de boleto centralizado com sucesso (`\"retorno\": \"02\"`) e com informações de rateio dos valores.\n\n\n**Boleto de proposta**\n\n- Ambiente: `P`\n\n- Nosso número: `5938458377`\n\n    Exemplo de registro de boleto centralizado com sucesso (`\"retorno\": \"02\"`) e da espécie boleto de proposta.\n\n\n**Cartão de crédito**\n\n- Ambiente: `P`\n\n- Nosso número: `5899759526`\n\n    Exemplo de registro de boleto com sucesso apenas base Banrisul (`\"retorno\": \"01\"`) e da espécie cartão de crédito.\n\nLembrando que uma chamada via Sandbox não ocorre nenhum registro em Produção, são apenas testes com variadas opções de entrada e simulações de retorno. \n\n# Leiaute de Boletos\nNesta seção são apresentadas as regras específicas para confecção dos boletos pelo beneficiário. Lembrando que os boletos da sua organização devem ser validados durante o seu processo de homologação junto ao Banrisul.\n\nPara a homologação de boletos, você deve enviar 5 requisições de registro e retornos de sucesso, além dos arquivos em formato PDF dos boletos correspondentes. É importante enviar diferentes cenários que serão utilizados pela organização no registro de títulos. As requisições, os retornos de sucesso e boletos correspondentes em formato PDF devem ser enviados para o e-mail [atendimento_teste_cobranca@banrisul.com.br](mailto:atendimento_teste_cobranca@banrisul.com.br).\n\nNossa equipe fará a conferência de campos e informações constantes nos boletos, algo que evitará transtornos futuros ou reclamações de pagadores. Se os boletos estiverem aderentes às regras abaixo, a sua organização será liberada em produção.\n\nDúvidas, contate o suporte da Cobrança através do e-mail: [atendimento_teste_cobranca@banrisul.com.br](mailto:atendimento_teste_cobranca@banrisul.com.br). \n\n## Especificações técnicas\n - Gramatura do papel: mínimo 50 g/m2;\n - Dimensões: Formato Formato envelope - 95 a 108 mm de altura por 170 a 216 mm de comprimento;\n - Cor da impressão: fundo branco/impressão preto ou azul. \n\n## Definição dos Campos do Boleto\n### Número de Vias\nUma (1) podendo ser subdividida em até três (3) partes: Recibo do Pagador, Ficha de Compensação e Ficha de Caixa (opcional). \n\n### Disposição das partes\nFormato envelope: Recibo do Pagador na parte superior, Ficha de Caixa (se houver) na parte central e Ficha de Compensação na parte inferior. \n\n## Instruções de preenchimento do boleto\n### Ficha de Compensação\n  a) **Parte superior esquerda:** nome ou logotipo do Banco e, a sua direita o número-código de compensação com dígito verificador 041-8, em negrito, com caractere de 5 mm e traços ou fios de 1,2 mm;\n\n  b) **Parte superior direita:** representação numérica do conteúdo do código de barras (linha digitável) cujos caracteres devem ser 3,5 mm a 4 mm de altura e com traços ou fios de 0,3 mm de espessura. A linha digitável utilizada deve ser a retornada na resposta de sua requisição, após confirmado o registro.\n\n  c) **Código de Barras:**\n  - Utilizar o código de barras devolvido na resposta da requisição, após confirmado o registrado;\n  - Posição: 12 mm desde a margem inferior da Ficha de Compensação até o centro do código de barras e 5 mm da lateral esquerda do formulário até o início do código de barras;\n  - Dimensão: 103 mm de comprimento por 13 mm de altura;\n  - Identificação: na margem inferior direita com dimensão máxima de 2 mm e traços ou fios de 0,3 mm com a expressão \"AUTENTICAÇÃO MECÂNICA - FICHA DE COMPENSAÇÃO\".\n\n  d) **Quadro de Impressão:** deverá apresentar grade/denominação dos campos conforme o modelo disposto na seção [Formato Envelope - Ficha de Compensação](#section/Leiaute-de-Boletos/Modelo-de-boleto).\n\n  e) **Boleto de proposta:** deverá conter a redação abaixo:\n\n`Este boleto se refere a uma proposta já feita a você e o seu pagamento não é obrigatório. Deixar de pagá-lo não dará causa a protesto, a cobrança judicial ou extrajudicial, nem a inserção de seu nome em cadastro de restrição ao crédito. Pagar até a data de vencimento significa aceitar a proposta. Informações adicionais sobre a proposta e sobre o respectivo contrato poderão ser solicitadas a qualquer momento ao beneficiário, por meio de seus canais de atendimento.` \n\n### Ficha de caixa (opcional)\nSeguir instruções da seção \"Recibo do Pagador\" abaixo. \n\n### Recibo do Pagador\na) Devem ser impressas, no mínimo, as seguintes informações:\n  - Nome, endereço e CPF/CNPJ do beneficiário;\n  - Nome do pagador;\n  - Nosso número;\n  - Número do documento;\n  - Data de vencimento;\n  - Valor do documento;\n  - Telefones SAC Banrisul: 0800-646-1515 e Ouvidoria Banrisul: 0800-644-2200.\n\nb) **Identificação do Banrisul** (Conter um ou mais itens a seguir):\n  - Nome; Logotipo; Linha digitável.\n\nc) **Quadro de Impressão:** preferencialmente observar o modelo constante na seção \"Formato envelope - Recibo do pagador\". \n\n## Modelo de boleto\n### Formato envelope - Recibo do pagador:\n![Modelo boleto - Recibo Pagador](https://banrisulfordevelopers.s3.sa-east-1.amazonaws.com/static/docs/boletos/Boletos-Recibo-Pagador.png) \n\n### Formato envelope - Ficha de compensação\n![Modelo boleto - Ficha de compensação](https://banrisulfordevelopers.s3.sa-east-1.amazonaws.com/static/docs/boletos/Boletos-Ficha-Compensacao.png) \n\n# Cálculo do Nosso Número\nO nosso número no Banrisul possui 10 dígitos, sendo os 8 primeiros de livre escolha do beneficiário e os dois últimos calculados, respectivamente, pelo módulo 10 e 11. \n\n## Módulo 10\nCálculo do primeiro dígito verificador.\n\nAtribuir a cada dígito, da direita para a esquerda, os pesos 2 e 1 (respectivamente).\n\nMultiplicar cada dígito pelo respectivo peso e, se o resultado for superior a 9, subtrair 9 do resultado.\n\n`(N1*1-9) + (N2*2-9) + (N3*1-9) + (N4*2-9) + (N5*1-9) + (N6*2-9) + (N7*1-9) + (N8*2-9)`\n\nSomar todos os resultados, dividir por 10 e guardar o resto.\n\nO primeiro DV será o resultado da operação 10 - resto.\n\n**Observações:**\n - Quando o somatório for menor que 10, o resto da divisão por 10 será o próprio somatório;\n - Quando o resto for 0, o primeiro DV é igual a 0, ou seja, o último passo não é necessário.\n\n**Exemplo:**\nTomemos por base o Nosso Número = 00189274\n\nSomatório, atribuindo-se os pesos 2 e 1, respectivamente, sempre da direita para a esquerda.\n\n`(0*1)+(0*2)+(0*1)+(8*2-9)+(9*1)+(2*2)+(7*1)+(4*2)`\n\n![Módulo 10](https://banrisulfordevelopers.s3.sa-east-1.amazonaws.com/static/docs/boletos/Boletos-Modulo10.PNG)\n\nSomatório = 36\n\nQuociente = 36 / 10 = 3 e Resto = 6\n\nPrimeiro DV = 10 - 6 = 4\n\nPara o cálculo do segundo DV, o primeiro DV é agregado ao Nosso Número original (na última posição), ou seja: `00189274.4`. \n\n## Módulo 11\nAtribuir a cada um dos 9 dígitos pesos de 2 a 7, respectivamente, da direita para a esquerda.\n\nMultiplicar cada dígito pelo seu peso e somar todos os resultados.\n\nDividir o somatório por 11 e calcular o resto.\n\nO segundo DV será o resultado de 11 - resto.\n\n`(N1*4)+(N2*3)+(N3*2)+(N4*7)+(N5*6)+(N6*5)+(N7*4)+(N8*3)+(N9*2)`\n\n**Observações:**\n\n - Se o somatório obtido for menor que 11, considerar como resto da divisão o próprio somatório.\n - Se o resto obtido no cálculo do módulo 11 for 0, o segundo NC será igual ao próprio resto.\n - Se o resto obtido no cálculo do módulo 11 for igual a 1, considera-se o DV inválido. Neste caso, soma-se 1 ao DV obtido do módulo 10 e refaz-se o cálculo do módulo 11. No caso do primeiro DV ser 9, considera-se então o DV inválido (pois 9+1=10). Neste caso, o DV do módulo 10 automaticamente será igual a 0 e procede-se assim novo cálculo pelo módulo 11.\n\n**Exemplo:**\n\nContinuando o exemplo anterior, segue o cálculo do segundo DV de `00189274.4`\n\n![Módulo 11](https://banrisulfordevelopers.s3.sa-east-1.amazonaws.com/static/docs/boletos/Boletos-Modulo11.PNG)\n\nSomatório = 170\n\nQuociente = 170 / 11 = 15 e Resto = 5\n\nSegundo DV = 11 - 5 = 6\n\nPortanto, o número de controle procurado é `46`. \n\n.\n\nEstamos finalizando nossa documentação com todo o cuidado, de modo a melhor atendê-lo.\n\n**Agradecemos a sua compreensão. Em breve mais detalhes.** \n\n# Authentication\n\n<!-- ReDoc-Inject: <security-definitions> -->",
+    "contact": {
+      "name": "Banco do Estado do Rio Grande do Sul. - Banrisul for Developers",
+      "url": "https://developersdev.banrisul.com.br"
+    },
+    "x-logo": {
+      "url": "https://banrisulfordevelopers.s3-sa-east-1.amazonaws.com/static/logo-blue.png",
+      "backgroundColor": "#FFFFFF",
+      "altText": "Banrisul for Developers"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://apidev.banrisul.com.br/cobranca/v1",
+      "description": "Servidor de Testes Sandbox"
+    },
+    {
+      "url": "https://api.banrisul.com.br/cobranca/v1",
+      "description": "Servidor de Produção"
+    }
+  ],
+  "security": [
+    {
+      "OAuth2": [
+        "boletos"
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "boletos",
+      "description": "### API de Cobrança\n**Através da Cobrança Bancária você pode receber valores pela venda de seus produtos e serviços, por meio de um boleto de pagamento.**\n\nCom a nossa API você estará habilitado a registrar seus boletos de forma online, além de poder realizar a consulta de títulos ativos, baixados ou liquidados. Em breve serão disponibilizados novos serviços, como a emissão de boleto (convertido em base 64), alteração de vencimento e solicitação de baixa via API.\n\nPara a utilização e controle deste serviço, será necessário informar sempre o código do Beneficiário (Convênio de Cobrança), autorizado pelo Banrisul.\n\nEm caso de dúvidas, verifique a documentação e fale conosco.\n\nBanrisul. Nossa parceria faz a diferença.\n"
+    }
+  ],
+  "paths": {
+    "/boletos/{idBoleto}": {
+      "get": {
+        "summary": "Consultar boleto",
+        "description": "Consulta detalhes de um boleto bancário que ainda está ativo ou que já foi baixado.",
+        "parameters": [
+          {
+            "name": "idBoleto",
+            "in": "path",
+            "description": "Identificador do boleto de cobrança. No idBoleto pode ser informado o nosso número OU código de barras OU linha digitável. Para identificar o boleto pelo código de barras ou linha digitável é obrigatório informar o tipo_id. Caso informado o nosso número, o tipo_id se torna opcional.",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "minLength": 3,
+              "maxLength": 47
+            }
+          },
+          {
+            "name": "tipo_id",
+            "in": "query",
+            "description": "Identifica o tipo do IdBoleto. Vide enum.",
+            "required": false,
+            "example": "CODIGO_BARRAS",
+            "schema": {
+              "type": "string",
+              "maxLength": 15,
+              "enum": [
+                "NOSSO_NUMERO",
+                "CODIGO_BARRAS",
+                "LINHA_DIGITAVEL"
+              ]
+            }
+          },
+          {
+            "name": "bergs-beneficiario",
+            "in": "header",
+            "description": "Número do convênio. Código completo do Beneficiário, composto por: Número da agência (4 dígitos), código do beneficiário (7 dígitos) e número de controle (2 dígitos). Preenchido com zeros à esquerda cada complemento.",
+            "required": true,
+            "example": "0010000001088",
+            "schema": {
+              "type": "string",
+              "format": "number",
+              "minLength": 13,
+              "maxLength": 13,
+              "pattern": "^\\d{13}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCESSO. A requisição foi atendida e resultou em resposta.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaConsultarBoleto"
+                },
+                "examples": {
+                  "Sem instruções: GET /boletos/264": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0000000264",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04191861100000150502100100000010000000024047",
+                        "linha_digitavel": "04192100180000001000900000240473186110000015050",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "A",
+                        "situacao_pagamento": 1,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  },
+                  "Com juros e desconto: GET /boletos/38806": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0000038806",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04197861100000150502100100000010000003884071",
+                        "linha_digitavel": "04192100180000001000900038840716786110000015050",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "A",
+                        "situacao_pagamento": 1,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 1,
+                            "data": "2021-05-08",
+                            "valor": "0.50"
+                          },
+                          "desconto": {
+                            "codigo": 1,
+                            "data": "2021-05-03",
+                            "valor": "6.95"
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  },
+                  "Com multa e abatimento: GET /boletos/6445438": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0006445438",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04191861100000150502100100000010000644544009",
+                        "linha_digitavel": "04192100180000001000906445440099186110000015050",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "A",
+                        "situacao_pagamento": 1,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "multa": {
+                            "codigo": 2,
+                            "data": "2021-05-06",
+                            "taxa": "0.4"
+                          },
+                          "abatimento": {
+                            "valor": "6.80"
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  },
+                  "Com mensagens: GET /boletos/6445675": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0006445675",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04193861100000150502100100000010000644564050",
+                        "linha_digitavel": "04192100180000001000906445640508386110000015050",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "A",
+                        "situacao_pagamento": 1,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "multa": {
+                            "codigo": 2,
+                            "data": "2021-05-06",
+                            "taxa": "0.4"
+                          },
+                          "desconto": {
+                            "codigo": 1,
+                            "data": "2021-05-03",
+                            "valor": "6.95"
+                          },
+                          "abatimento": {
+                            "valor": "6.80"
+                          },
+                          "protesto": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        },
+                        "mensagens": [
+                          {
+                            "linha": 1,
+                            "texto": "PORTE: 19.0 (NUM. DE INDIVIDUOS))"
+                          },
+                          {
+                            "linha": 2,
+                            "texto": "PAGAMENTO PREFERENCIALMENTE NO BANRISUL"
+                          },
+                          {
+                            "linha": 3,
+                            "texto": "NAO ACEITAR PAGAMENTO COM CHEQUE"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "Com rateio: GET /boletos/6445918": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0006445918",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04191861100000150502100100000010000644594006",
+                        "linha_digitavel": "04192100180000001000906445940064186110000015050",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "A",
+                        "situacao_pagamento": 1,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "multa": {
+                            "codigo": 2,
+                            "data": "2021-05-06",
+                            "taxa": "0.4"
+                          },
+                          "desconto": {
+                            "codigo": 1,
+                            "data": "2021-05-03",
+                            "valor": "6.95"
+                          },
+                          "abatimento": {
+                            "valor": "6.80"
+                          },
+                          "protesto": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        },
+                        "rateio": {
+                          "codigo": 2,
+                          "tipo_valor": 2,
+                          "beneficiarios": [
+                            {
+                              "codigo": "0010000001088",
+                              "valor": "100.00",
+                              "tipo_pessoa": "J",
+                              "cpf_cnpj": "92702067000196",
+                              "nome": "BANRISUL COBRANCA-TESTE",
+                              "nome_fantasia": "BANRISUL"
+                            },
+                            {
+                              "codigo": "0010022145083",
+                              "valor": "40.00",
+                              "tipo_pessoa": "J",
+                              "cpf_cnpj": "92702067000196",
+                              "nome": "BANRISUL CARTEIRA TESTE",
+                              "nome_fantasia": "BANRISUL"
+                            },
+                            {
+                              "codigo": "0010041041035",
+                              "valor": "10.50",
+                              "tipo_pessoa": "J",
+                              "cpf_cnpj": "92702067000196",
+                              "nome": "BANRISUL - TESTE",
+                              "nome_fantasia": "BANRISUL"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "Com pagamento parcial: GET /boletos/17976125:": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0017976125",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04197861100000150502100100000010001797614002",
+                        "linha_digitavel": "04192100180000001000917976140024786110000015050",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "A",
+                        "situacao_pagamento": 1,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "multa": {
+                            "codigo": 2,
+                            "data": "2021-05-06",
+                            "taxa": "0.4"
+                          },
+                          "desconto": {
+                            "codigo": 1,
+                            "data": "2021-05-03",
+                            "valor": "6.95"
+                          },
+                          "abatimento": {
+                            "valor": "6.80"
+                          },
+                          "protesto": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 2,
+                          "codigo": 1,
+                          "quantidade": 10,
+                          "tipo": 2,
+                          "valor_min": "5.00"
+                        }
+                      }
+                    }
+                  },
+                  "Com operações e crédito retido: GET /boletos/740969": {
+                    "value": {
+                      "retorno": "01",
+                      "titulo": {
+                        "nosso_numero": "0000740969",
+                        "seu_numero": "019506",
+                        "data_vencimento": "2021-01-30",
+                        "valor_nominal": "860.00",
+                        "especie": "99",
+                        "data_emissao": "2020-11-30",
+                        "codigo_barras": "04197851600000860002100100000010000074094047",
+                        "linha_digitavel": "04192100180000001000900740940473785160000086000",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "N",
+                        "situacao_pagamento": 3,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        },
+                        "operacoes": {
+                          "data_pagamento": "2021-02-01",
+                          "data_credito": "2021-02-03",
+                          "valor_pagamento": "860.00",
+                          "valor_cobrado": "860.00",
+                          "valor_creditado_debitado": "860.00"
+                        }
+                      }
+                    }
+                  },
+                  "Boleto de proposta: GET /boletos/5938458377": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "5938458377",
+                        "seu_numero": "1",
+                        "data_vencimento": "2021-06-10",
+                        "valor_nominal": "25.99",
+                        "especie": "32",
+                        "data_emissao": "2021-06-07",
+                        "codigo_barras": "04191864700000000002100100000010593845834057",
+                        "linha_digitavel": "04192100180000001059538458340577186470000000000",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "A",
+                        "situacao_pagamento": 1,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 2,
+                          "tipo": 2,
+                          "valor_min": "0.00",
+                          "valor_max": "10.00"
+                        }
+                      }
+                    }
+                  },
+                  "Cartão de crédito: GET /boletos/5899759526": {
+                    "value": {
+                      "retorno": "01",
+                      "titulo": {
+                        "nosso_numero": "5899759526",
+                        "seu_numero": "25950039",
+                        "data_vencimento": "2020-12-31",
+                        "valor_nominal": "0.00",
+                        "especie": "31",
+                        "data_emissao": "2019-06-22",
+                        "id_titulo_empresa": "2595003957",
+                        "codigo_barras": "04191000000000000002100100000010589975954006",
+                        "linha_digitavel": "04192100180000001058799759540067100000000000000",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "A",
+                        "situacao_pagamento": 1,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "baixa": {
+                            "codigo": 1,
+                            "prazo": 18
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 2,
+                          "codigo": 1,
+                          "quantidade": 17,
+                          "tipo": 2,
+                          "valor_min": "1.50"
+                        }
+                      }
+                    }
+                  },
+                  "Devolvido: GET /boletos/5942970953": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "5942970953",
+                        "seu_numero": "SEU NUMERO 1",
+                        "data_vencimento": "2021-12-29",
+                        "valor_nominal": "999.99",
+                        "especie": "02",
+                        "data_emissao": "2021-01-02",
+                        "codigo_barras": "04191884900000999992100100000010594297094038",
+                        "linha_digitavel": "04192100180000001059542970940385188490000099999",
+                        "situacao_banrisul": "D",
+                        "situacao_cip": "A",
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        },
+                        "operacoes": {
+                          "data_baixa": "2021-10-14"
+                        }
+                      }
+                    }
+                  },
+                  "Liquidado: GET /boletos/7781": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0000007781",
+                        "seu_numero": "6",
+                        "data_vencimento": "2019-09-30",
+                        "valor_nominal": "8000.00",
+                        "especie": "02",
+                        "data_emissao": "2019-09-04",
+                        "codigo_barras": "04196802800008000002100100000010000000774062",
+                        "linha_digitavel": "04192100180000001000900007740624680280000800000",
+                        "situacao_banrisul": "L",
+                        "situacao_cip": "A",
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 1,
+                            "data": "2019-10-01",
+                            "valor": "10.00"
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        },
+                        "operacoes": {
+                          "data_pagamento": "2019-10-01",
+                          "data_credito": "2019-10-02",
+                          "valor_juros": "10.00",
+                          "valor_pagamento": "8000.00",
+                          "valor_cobrado": "8010.00",
+                          "valor_creditado_debitado": "8010.00"
+                        }
+                      }
+                    }
+                  },
+                  "Baixado: GET /boletos/5885491547": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "5885491547",
+                        "seu_numero": "5000004938",
+                        "data_vencimento": "2019-11-06",
+                        "valor_nominal": "126.19",
+                        "especie": "04",
+                        "data_emissao": "2019-05-22",
+                        "codigo_barras": "04196806500000126192100100000010588549154020",
+                        "linha_digitavel": "04192100180000001058785491540200680650000012619",
+                        "situacao_banrisul": "B",
+                        "situacao_cip": "A",
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        },
+                        "operacoes": {
+                          "data_baixa": "2020-01-10"
+                        }
+                      }
+                    }
+                  },
+                  "Rejeitado na CIP: GET /boletos/5945744857": {
+                    "value": {
+                      "retorno": "01",
+                      "titulo": {
+                        "nosso_numero": "5945744857",
+                        "seu_numero": "0000000000000",
+                        "data_vencimento": "2022-01-25",
+                        "valor_nominal": "2001.00",
+                        "especie": "99",
+                        "data_emissao": "2022-01-04",
+                        "codigo_barras": "04191887600002001002100100000010594574484035",
+                        "linha_digitavel": "04192100180000001059545744840351188760000200100",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "R",
+                        "situacao_pagamento": 1,
+                        "carteira": 1,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  },
+                  "Carteira de desconto: GET /boletos/6109919037": {
+                    "value": {
+                      "retorno": "01",
+                      "titulo": {
+                        "nosso_numero": "6109919037",
+                        "seu_numero": "2010947",
+                        "data_vencimento": "2020-12-19",
+                        "valor_nominal": "1920.00",
+                        "especie": "02",
+                        "data_emissao": "2020-10-20",
+                        "codigo_barras": "04194847400001920002100100000010610991904018",
+                        "linha_digitavel": "04192100180000001061109919040189484740000192000",
+                        "situacao_banrisul": "A",
+                        "situacao_cip": "N",
+                        "situacao_pagamento": 6,
+                        "carteira": 4,
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 1,
+                            "data": "2020-12-20",
+                            "valor": "6.40"
+                          },
+                          "protesto": {
+                            "codigo": 1,
+                            "prazo": 5
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUISIÇÃO INVÁLIDA. O servidor não pôde processar a requisição devido a uma sintaxe de requisição malformada, estrutura da mensagem da requisição inválida, ou valores inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErro"
+                },
+                "examples": {
+                  "Nosso número inválido: GET /boletos/ABC": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Nosso número inválido.",
+                          "complemento": "OCPI0001"
+                        }
+                      ]
+                    }
+                  },
+                  "Tipo_id inválido: GET /boletos/264?tipo_id=SEU_NUMERO": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Tipo_id inválido.",
+                          "complemento": "OCPI0004"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NÃO AUTORIZADO. A requisição requer autenticação do usuário.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErroNaoAutorizado"
+                },
+                "examples": {
+                  "Não autenticado: GET /boletos/264": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "GT00",
+                          "mensagem": "Erro na autenticação (02f6d6ae-ce0d-41f4-9de8-6b8803ba5932)",
+                          "complemento": "piaaa000201"
+                        }
+                      ]
+                    }
+                  },
+                  "Beneficiário (0001000000252) sem permissão: GET /boletos/264": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Permissão não cadastrada; vencida; ou não liberada para produção.",
+                          "complemento": "OC4B0003"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NÃO ENCONTRADO. O servidor não conseguiu encontrar o recurso solicitado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErro"
+                },
+                "examples": {
+                  "Beneficiário (0001000000414) inexistente: GET /boletos/264": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "A6",
+                          "mensagem": "Código do beneficiário inválido ou encerrado."
+                        }
+                      ]
+                    }
+                  },
+                  "Título inexistente: GET /boletos/1090": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Título inexistente.",
+                          "complemento": "OC4B0004"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "ERRO INTERNO. O servidor encontrou uma condição inesperada que o impediu de atender a requisição.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErro"
+                },
+                "examples": {
+                  "Simulando erro inesperado: GET /boletos/000": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Erro de sistema.",
+                          "complemento": "OCWS0001"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "boletos"
+            ]
+          }
+        ],
+        "operationId": "consultarBoletoId",
+        "tags": [
+          "boletos"
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "Curl",
+            "source": "curl -X GET -H \"Authorization: Bearer b34752d9-bf05-4c4c-a65e-491f935c6903\" -H \"Content-Type: application/json\" -H \"bergs-beneficiario: 0010000001088\" -d '{}' \"https://URL_DO_AMBIENTE/cobranca/v1/boletos/264"
+          },
+          {
+            "lang": "C#",
+            "source": "var client = new RestClient(\"https://URL_DO_AMBIENTE/cobranca/v1/boletos/264\");\nvar request = new RestRequest(Method.GET);\nrequest.AddHeader(\"content-type\", \"application/json\");\nrequest.AddHeader(\"Authorization\", \"Bearer b34752d9-bf05-4c4c-a65e-491f935c6903\");\nrequest.AddHeader(\"bergs-beneficiario\", \"0010000001088\");\nrequest.AddParameter(\"application/json\", \"{}\", ParameterType.RequestBody);\nIRestResponse response = client.Execute(request);"
+          },
+          {
+            "lang": "Java",
+            "source": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"application/json\");\nRequestBody body = RequestBody.create(mediaType, \"{}\");\nRequest request = new Request.Builder()\n  .url(\"https://URL_DO_AMBIENTE/cobranca/v1/boletos/264\")\n  .get(body)\n  .addHeader(\"Authorization\", \"Bearer b34752d9-bf05-4c4c-a65e-491f935c6903\")\n  .addHeader(\"bergs-beneficiario\", \"0010000001088\")\n  .addHeader(\"content-type\", \"application/json\")\n  .addHeader(\"cache-control\", \"no-cache\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+          },
+          {
+            "lang": "Javascript",
+            "source": "const myHeaders = new Headers({\n  'Authorization': 'Bearer b34752d9-bf05-4c4c-a65e-491f935c6903',\n  'bergs-beneficiario': '0010000001088'\n});\n  \nconst myRequest = new Request('https://URL_DO_AMBIENTE/cobranca/v1/boletos/264', \n{\n   method: 'GET',\n   headers: myHeaders\n});\n   \nfetch(myRequest)\n   .then(response => response.json())\n   .then(data => console.log(data))\n   .catch(error => console.error('Error message: ', error));\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n\n$request = new HttpRequest();\n$request->setUrl('https://URL_DO_AMBIENTE/cobranca/v1/boletos/264');\n$request->setMethod(HTTP_METH_GET);\n\n$request->setHeaders(array(\n  'content-type' => 'application/json',\n  'Authorization' => 'Bearer b34752d9-bf05-4c4c-a65e-491f935c6903',\n  'bergs-beneficiario' => '0010000001088'\n));\n\n$request->setBody('{}');\n\ntry {\n  $response = $request->send();\n\n  echo $response->getBody();\n} catch (HttpException $ex) {\n  echo $ex;\n}        "
+          },
+          {
+            "lang": "Python",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"https://URL_DO_AMBIENTE/\")\n\npayload = \"{}\"\n\nheaders = {\n    'Authorization': \"Bearer b34752d9-bf05-4c4c-a65e-491f935c6903\",\n    'bergs-beneficiario': '0010000001088',\n    'content-type': \"application/json\"                \n    }\n\nconn.request(\"GET\", \"cobranca/v1/boletos/264\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Ruby",
+            "source": "require 'uri'\nrequire 'net/http'\n\nurl = URI(\"https://URL_DO_AMBIENTE/cobranca/v1/boletos/264\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\nhttp.verify_mode = OpenSSL::SSL::VERIFY_NONE\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer b34752d9-bf05-4c4c-a65e-491f935c6903'\nrequest[\"bergs-beneficiario\"] = '0010000001088'\nrequest[\"content-type\"] = 'application/json'\nrequest.body = \"{}\"\n\nresponse = http.request(request)\nputs response.read_body"
+          }
+        ]
+      }
+    },
+    "/boletos": {
+      "post": {
+        "summary": "Registrar boleto",
+        "description": "Registro de um boleto bancário.",
+        "parameters": [
+          {
+            "name": "bergs-beneficiario",
+            "in": "header",
+            "description": "Número do convênio. Código completo do Beneficiário, composto por: Número da agência (4 dígitos), código do beneficiário (7 dígitos) e número de controle (2 dígitos). Preenchido com zeros à esquerda cada complemento.",
+            "required": true,
+            "example": "0010000001088",
+            "schema": {
+              "type": "string",
+              "format": "number",
+              "minLength": 13,
+              "maxLength": 13,
+              "pattern": "^\\d{13}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequisicaoRegistrarBoleto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "SUCESSO. A requisição foi atendida e resultou em resposta, o boleto foi homologado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaRegistrarBoleto"
+                },
+                "examples": {
+                  "Homologado (ambiente=T) sem nosso número": {
+                    "value": {
+                      "retorno": "04",
+                      "titulo": {
+                        "nosso_numero": "0000000000",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04196861100000150502100100000010000000004089",
+                        "linha_digitavel": "04192100180000001000900000040899686110000015050",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "multa": {
+                            "codigo": 2,
+                            "data": "2021-05-06",
+                            "taxa": "0.4"
+                          },
+                          "desconto": {
+                            "codigo": 1,
+                            "data": "2021-05-03",
+                            "valor": "6.95"
+                          },
+                          "abatimento": {
+                            "valor": "6.80"
+                          },
+                          "protesto": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  },
+                  "Homologado (ambiente=T) com nosso número (264)": {
+                    "value": {
+                      "retorno": "04",
+                      "titulo": {
+                        "nosso_numero": "0000000264",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04191861100000150502100100000010000000024047",
+                        "linha_digitavel": "04192100180000001000900000240473186110000015050",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "CRIADO. A requisição foi atendida e o boleto foi criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaRegistrarBoleto"
+                },
+                "examples": {
+                  "Registrado sem nosso número": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0006445268",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04198861100000150502100100000010000644524040",
+                        "linha_digitavel": "04192100180000001000906445240408886110000015050",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "multa": {
+                            "codigo": 2,
+                            "data": "2021-05-06",
+                            "taxa": "0.4"
+                          },
+                          "desconto": {
+                            "codigo": 1,
+                            "data": "2021-05-03",
+                            "valor": "6.95"
+                          },
+                          "abatimento": {
+                            "valor": "6.80"
+                          },
+                          "protesto": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  },
+                  "Registrado apenas Banrisul (nosso_numero=264)": {
+                    "value": {
+                      "retorno": "01",
+                      "titulo": {
+                        "nosso_numero": "0000000264",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04191861100000150502100100000010000000024047",
+                        "linha_digitavel": "04192100180000001000900000240473186110000015050",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  },
+                  "Com juros e desconto (nosso_numero=38806)": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0000038806",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04197861100000150502100100000010000003884071",
+                        "linha_digitavel": "04192100180000001000900038840716786110000015050",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 1,
+                            "data": "2021-05-08",
+                            "valor": "0.50"
+                          },
+                          "desconto": {
+                            "codigo": 1,
+                            "data": "2021-05-03",
+                            "valor": "6.95"
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  },
+                  "Com multa e abatimento (nosso_numero=6445438)": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0006445438",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04191861100000150502100100000010000644544009",
+                        "linha_digitavel": "04192100180000001000906445440099186110000015050",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "multa": {
+                            "codigo": 2,
+                            "data": "2021-05-06",
+                            "taxa": "0.4"
+                          },
+                          "abatimento": {
+                            "valor": "6.80"
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        }
+                      }
+                    }
+                  },
+                  "Com mensagens (nosso_numero=6445675)": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0006445675",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04193861100000150502100100000010000644564050",
+                        "linha_digitavel": "04192100180000001000906445640508386110000015050",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "multa": {
+                            "codigo": 2,
+                            "data": "2021-05-06",
+                            "taxa": "0.4"
+                          },
+                          "desconto": {
+                            "codigo": 1,
+                            "data": "2021-05-03",
+                            "valor": "6.95"
+                          },
+                          "abatimento": {
+                            "valor": "6.80"
+                          },
+                          "protesto": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        },
+                        "mensagens": [
+                          {
+                            "linha": 1,
+                            "texto": "PORTE: 19.0 (NUM. DE INDIVIDUOS))"
+                          },
+                          {
+                            "linha": 2,
+                            "texto": "PAGAMENTO PREFERENCIALMENTE NO BANRISUL"
+                          },
+                          {
+                            "linha": 3,
+                            "texto": "NAO ACEITAR PAGAMENTO COM CHEQUE"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "Com rateio (nosso_numero=6445918)": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "0006445918",
+                        "seu_numero": "64452-1",
+                        "data_vencimento": "2021-05-05",
+                        "valor_nominal": "150.50",
+                        "especie": "99",
+                        "data_emissao": "2021-03-17",
+                        "id_titulo_empresa": "0011000000000000000064452",
+                        "codigo_barras": "04191861100000150502100100000010000644594006",
+                        "linha_digitavel": "04192100180000001000906445940064186110000015050",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "multa": {
+                            "codigo": 2,
+                            "data": "2021-05-06",
+                            "taxa": "0.4"
+                          },
+                          "desconto": {
+                            "codigo": 1,
+                            "data": "2021-05-03",
+                            "valor": "6.95"
+                          },
+                          "abatimento": {
+                            "valor": "6.80"
+                          },
+                          "protesto": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 3
+                        },
+                        "rateio": {
+                          "codigo": 2,
+                          "tipo_valor": 2,
+                          "beneficiarios": [
+                            {
+                              "codigo": "0010000001088",
+                              "valor": "100.00",
+                              "tipo_pessoa": "J",
+                              "cpf_cnpj": "92702067000196",
+                              "nome": "BANRISUL COBRANCA-TESTE",
+                              "nome_fantasia": "BANRISUL"
+                            },
+                            {
+                              "codigo": "0010022145083",
+                              "valor": "40.00",
+                              "tipo_pessoa": "J",
+                              "cpf_cnpj": "92702067000196",
+                              "nome": "BANRISUL CARTEIRA TESTE",
+                              "nome_fantasia": "BANRISUL"
+                            },
+                            {
+                              "codigo": "0010041041035",
+                              "valor": "10.50",
+                              "tipo_pessoa": "J",
+                              "cpf_cnpj": "92702067000196",
+                              "nome": "BANRISUL - TESTE",
+                              "nome_fantasia": "BANRISUL"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "Boleto de proposta (nosso_numero=5938458377)": {
+                    "value": {
+                      "retorno": "02",
+                      "titulo": {
+                        "nosso_numero": "5938458377",
+                        "seu_numero": "1",
+                        "data_vencimento": "2021-06-10",
+                        "valor_nominal": "25.99",
+                        "especie": "32",
+                        "data_emissao": "2021-06-07",
+                        "codigo_barras": "04191864700000000002100100000010593845834057",
+                        "linha_digitavel": "04192100180000001059538458340577186470000000000",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 1,
+                          "codigo": 2,
+                          "tipo": 2,
+                          "valor_min": "1.00",
+                          "valor_max": "30.00"
+                        }
+                      }
+                    }
+                  },
+                  "Cartão de crédito (nosso_numero=5899759526)": {
+                    "value": {
+                      "retorno": "01",
+                      "titulo": {
+                        "nosso_numero": "5899759526",
+                        "seu_numero": "25950039",
+                        "data_vencimento": "2020-12-31",
+                        "valor_nominal": "0.00",
+                        "especie": "31",
+                        "data_emissao": "2019-06-22",
+                        "id_titulo_empresa": "2595003957",
+                        "codigo_barras": "04191000000000000002100100000010589975954006",
+                        "linha_digitavel": "04192100180000001058799759540067100000000000000",
+                        "beneficiario": {
+                          "codigo": "0010000001088",
+                          "tipo_pessoa": "J",
+                          "cpf_cnpj": "92702067000196",
+                          "nome": "BANRISUL COBRANCA-TESTE",
+                          "nome_fantasia": "BANRISUL"
+                        },
+                        "pagador": {
+                          "tipo_pessoa": "F",
+                          "cpf_cnpj": "00000000191",
+                          "nome": "PAGADOR FICTICIO",
+                          "endereco": "RUA CALDAS JUNIOR 120",
+                          "cep": "90010260",
+                          "cidade": "PORTO ALEGRE",
+                          "uf": "RS",
+                          "aceite": "A"
+                        },
+                        "instrucoes": {
+                          "juros": {
+                            "codigo": 3
+                          },
+                          "baixa": {
+                            "codigo": 1,
+                            "prazo": 18
+                          }
+                        },
+                        "pag_parcial": {
+                          "autoriza": 2,
+                          "codigo": 1,
+                          "quantidade": 17,
+                          "tipo": 2,
+                          "valor_min": "1.50"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "REQUISIÇÃO INVÁLIDA. O servidor não pôde processar a requisição devido a uma sintaxe de requisição malformada, estrutura da mensagem da requisição inválida, ou valores inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErro"
+                },
+                "examples": {
+                  "Beneficiário em branco": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Código do beneficiário inválido.",
+                          "complemento": "OCPI0005"
+                        },
+                        {
+                          "codigo": "00",
+                          "mensagem": "Código do beneficiário deve conter 13 dígitos.",
+                          "complemento": "OCPI0006"
+                        }
+                      ]
+                    }
+                  },
+                  "Request Body vazio": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Request Body está vazio."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "NÃO AUTORIZADO. A requisição requer autenticação do usuário.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErroNaoAutorizado"
+                },
+                "examples": {
+                  "Não autenticado": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "GT00",
+                          "mensagem": "Erro na autenticação (02f6d6ae-ce0d-41f4-9de8-6b8803ba5932)",
+                          "complemento": "piaaa000201"
+                        }
+                      ]
+                    }
+                  },
+                  "Beneficiário (0001000000252) sem permissão": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Permissão não cadastrada; vencida; ou não liberada para produção.",
+                          "complemento": "OC4B0003"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NÃO ENCONTRADO. O servidor não conseguiu encontrar o recurso solicitado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErro"
+                },
+                "examples": {
+                  "Beneficiário (0010000027079) desativado": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "A6",
+                          "mensagem": "Código do beneficiário inválido ou encerrado."
+                        }
+                      ]
+                    }
+                  },
+                  "Beneficiário (0001000000414) inexistente": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "A6",
+                          "mensagem": "Código do beneficiário inválido ou encerrado."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "ENTIDADE NÃO PROCESSÁVEL. O servidor entende o tipo de conteúdo da entidade da requisição, e a sintaxe da requisição esta correta, mas não foi possível processar as instruções presentes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErro"
+                },
+                "examples": {
+                  "Beneficiário (0001000000171) criado na mesma data": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Não é possível registrar títulos na mesma data de criação/reativação do cadastro de beneficiário.",
+                          "complemento": "OC4B0007"
+                        }
+                      ]
+                    }
+                  },
+                  "Beneficiário (0001000000333) inapto": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Beneficiário inapto para registrar títulos.",
+                          "complemento": "OC4B0008"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "ERRO INTERNO. O servidor encontrou uma condição inesperada que o impediu de atender a requisição.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErro"
+                },
+                "examples": {
+                  "Simulando erro inesperado (nosso_numero=000)": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Erro de sistema.",
+                          "complemento": "OCWS0001"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVIÇO INDISPONÍVEL. O sistema encontra-se indisponível ou em atualização no momento, aguarde alguns minutos e tente novamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaErro"
+                },
+                "examples": {
+                  "Sistema em Atualização": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Sistema em atualização no momento, aguarde alguns minutos e tente novamente.",
+                          "complemento": "OC4B0005"
+                        }
+                      ]
+                    }
+                  },
+                  "Sistema Indisponível": {
+                    "value": {
+                      "ocorrencias": [
+                        {
+                          "codigo": "00",
+                          "mensagem": "Sistema indisponível no momento, aguarde alguns minutos e tente novamente.",
+                          "complemento": "OC4B0006"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "boletos"
+            ]
+          }
+        ],
+        "operationId": "registrarBoletoId",
+        "tags": [
+          "boletos"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RequisicaoRegistrarBoleto": {
+        "type": "object",
+        "description": "Representação dos campos de entrada de uma solicitação de registro de boleto bancário.",
+        "required": [
+          "ambiente",
+          "titulo"
+        ],
+        "properties": {
+          "ambiente": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1,
+            "pattern": "^(P{1}|T{1})$",
+            "description": "Indica se deseja executar no ambiente de Produção ou de Testes. No caso de enviar com ambiente = 'T', será executada apenas a validação dos dados de entrada, ou seja, o título não será registrado. Possíveis valores:\n - P = Produção\n - T = Testes",
+            "example": "T"
+          },
+          "titulo": {
+            "type": "object",
+            "description": "Representação dos dados do boleto bancário a ser registrado.",
+            "required": [
+              "seu_numero",
+              "data_vencimento",
+              "valor_nominal",
+              "especie",
+              "data_emissao",
+              "pagador",
+              "instrucoes",
+              "pag_parcial"
+            ],
+            "properties": {
+              "nosso_numero": {
+                "type": "string",
+                "format": "number",
+                "minLength": 3,
+                "maxLength": 10,
+                "pattern": "^\\d{3,10}$",
+                "description": "Número de identificação do título no banco. Caso o Nosso Número não seja enviado na entrada, será gerado um número automaticamente pelo sistema que será retornado na saída. Para o mesmo beneficiário, o Nosso Número somente poderá ser reutilizado no dia seguinte após a baixa do antigo título. Instruções para o cálculo do número de controle do nosso número constam na seção [Cálculo do Nosso Número](#section/Calculo-do-Nosso-Numero).",
+                "example": "264"
+              },
+              "seu_numero": {
+                "type": "string",
+                "maxLength": 13,
+                "pattern": "^[a-zA-Z0-9\\s%$*+.,/\\-]{1,13}$",
+                "description": "Identificador do título para o cliente.",
+                "example": "64452-A"
+              },
+              "data_vencimento": {
+                "type": "string",
+                "format": "date",
+                "maxLength": 10,
+                "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+                "description": "Data de vencimento do boleto no formato: `AAAA-MM-DD`. Para títulos registrados entre 23h30min e 23h59min, a data de vencimento informada deverá ser sempre superior à data de registro. Para títulos registrados entre 00h e 05h59min, a data de vencimento informada deverá ser sempre igual ou superior à data de registro.",
+                "example": "2021-01-07"
+              },
+              "valor_nominal": {
+                "type": "string",
+                "format": "double",
+                "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+                "maxLength": 16,
+                "description": "Valor nominal do título com 2 casas decimais.",
+                "example": "100000.04"
+              },
+              "especie": {
+                "type": "string",
+                "format": "number",
+                "pattern": "^(02{1}|04{1}|31{1}|32{1}|99{1})$",
+                "maxLength": 2,
+                "description": "Identifica a espécie do boleto. Possíveis valores:\n - 02 = Duplicata Mercantil\n - 04 = Duplicata de Serviço\n - 31 = Cartão de Crédito\n - 32 = Boleto de Proposta\n - 99 = Outros",
+                "example": "31"
+              },
+              "data_emissao": {
+                "type": "string",
+                "format": "date",
+                "maxLength": 10,
+                "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+                "description": "Data de Emissão do título no formato: `AAAA-MM-DD`. O prazo máximo para data de emissão é de trinta anos retroativos, considerando a data atual.",
+                "example": "2021-01-07"
+              },
+              "valor_iof": {
+                "type": "string",
+                "format": "double",
+                "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+                "maxLength": 16,
+                "description": "Valor do IOF com 2 casas decimais. Se informado valor de IOF, o boleto será registrado na carteira `8051` (Cobrança Simples Seguradoras). Informação de IOF não permitida para as espécies `31` (Cartão de crédito) e `32` (Boleto de proposta).",
+                "example": "100000.04"
+              },
+              "id_titulo_empresa": {
+                "type": "string",
+                "maxLength": 25,
+                "pattern": "^[a-zA-Z0-9\\s%$*+.,/\\-]{1,25}$",
+                "description": "Identificação do título para a empresa beneficiária. Alfanumérico (25)",
+                "example": "RE-201609/1"
+              },
+              "pagador": {
+                "$ref": "#/components/schemas/Pagador"
+              },
+              "instrucoes": {
+                "$ref": "#/components/schemas/Instrucoes"
+              },
+              "pag_parcial": {
+                "$ref": "#/components/schemas/PagamentoParcial"
+              },
+              "mensagens": {
+                "description": "Lista de mensagens, no máximo 9.",
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 9,
+                "items": {
+                  "$ref": "#/components/schemas/Mensagem"
+                }
+              },
+              "rateio": {
+                "$ref": "#/components/schemas/Rateio"
+              }
+            }
+          }
+        }
+      },
+      "RespostaConsultarBoleto": {
+        "type": "object",
+        "description": "Representação dos campos de resposta de uma solicitação de consulta de boletos bancários.",
+        "required": [
+          "retorno",
+          "titulo"
+        ],
+        "properties": {
+          "retorno": {
+            "type": "string",
+            "maxLength": 2,
+            "minLength": 2,
+            "pattern": "^\\d{2}$",
+            "description": "Código de retorno para identificar o resultado do processo de consulta do boleto.\n - 01 = Título não centralizado: indica que a consulta do título retornou com sucesso, mas ele não está disponível na base centralizada de títulos para pagamento interbancário, portanto o seu pagamento só poderá ser realizado no Banrisul caso ainda esteja com a situação ativa.\n - 02 = Título centralizado: significa que a consulta do título retornou com sucesso e poderá ser pago em qualquer rede bancária caso ainda esteja com a situação ativa.",
+            "example": "01"
+          },
+          "titulo": {
+            "$ref": "#/components/schemas/Boleto"
+          }
+        }
+      },
+      "RespostaRegistrarBoleto": {
+        "type": "object",
+        "description": "Representação dos campos de resposta de uma solicitação de registro de boletos bancários.",
+        "required": [
+          "retorno",
+          "titulo"
+        ],
+        "properties": {
+          "retorno": {
+            "type": "string",
+            "maxLength": 2,
+            "minLength": 2,
+            "pattern": "^\\d{2}$",
+            "description": "Código de retorno para identificar o resultado do processo de registro do boleto.\n - 01 = Sucesso, boleto registrado Banrisul: indica que o registro do título retornou com sucesso, mas ele não está disponível na base centralizada de títulos para pagamento interbancário, portanto o seu pagamento só poderá ser realizado no Banrisul, até que a comunicação com a base centralizada seja restabelecida.\n - 02 = Sucesso, boleto registrado Banrisul e centralizado: significa que o registro do título retornou com sucesso e poderá ser pago em qualquer rede bancária.\n - 04 = Homologado: significa que os testes foram efetuados com sucesso.",
+            "example": "01"
+          },
+          "titulo": {
+            "$ref": "#/components/schemas/Boleto"
+          }
+        }
+      },
+      "RespostaErro": {
+        "type": "object",
+        "description": "Representação de um objeto com os erros identificados. Contém uma lista de erros.",
+        "required": [
+          "ocorrencias"
+        ],
+        "properties": {
+          "ocorrencias": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "$ref": "#/components/schemas/Ocorrencia"
+            }
+          }
+        }
+      },
+      "RespostaErroNaoAutorizado": {
+        "$ref": "#/components/schemas/RespostaErro"
+      },
+      "Boleto": {
+        "type": "object",
+        "description": "Representação dos campos de boletos bancários.",
+        "required": [
+          "nosso_numero",
+          "seu_numero",
+          "data_vencimento",
+          "valor_nominal",
+          "especie",
+          "data_emissao",
+          "codigo_barras",
+          "linha_digitavel",
+          "beneficiario",
+          "pagador",
+          "instrucoes",
+          "pag_parcial"
+        ],
+        "properties": {
+          "nosso_numero": {
+            "type": "string",
+            "format": "number",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^\\d{10}$",
+            "description": "Número de identificação do título no banco.",
+            "example": "0000000264"
+          },
+          "seu_numero": {
+            "type": "string",
+            "maxLength": 13,
+            "pattern": "^[a-zA-Z0-9\\s%$*+.,/\\-]{1,13}$",
+            "description": "Identificador do título para o cliente.",
+            "example": "64452-A"
+          },
+          "data_vencimento": {
+            "type": "string",
+            "format": "date",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+            "description": "Data de vencimento do boleto no formato: `AAAA-MM-DD`.",
+            "example": "2021-01-07"
+          },
+          "valor_nominal": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor nominal do título com 2 casas decimais.",
+            "example": "100000.04"
+          },
+          "especie": {
+            "type": "string",
+            "format": "number",
+            "pattern": "^(02{1}|04{1}|31{1}|32{1}|99{1})$",
+            "minLength": 2,
+            "maxLength": 2,
+            "description": "Identifica a espécie do boleto. Possíveis valores:\n - 02 = Duplicata Mercantil\n - 04 = Duplicata de Serviço\n - 31 = Cartão de Crédito\n - 32 = Boleto de Proposta\n - 99 = Outros",
+            "example": "31"
+          },
+          "data_emissao": {
+            "type": "string",
+            "format": "date",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+            "description": "Data de Emissão do título no formato: `AAAA-MM-DD`.",
+            "example": "2021-01-07"
+          },
+          "valor_iof": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor do IOF com 2 casas decimais.",
+            "example": "100000.04"
+          },
+          "id_titulo_empresa": {
+            "type": "string",
+            "maxLength": 25,
+            "pattern": "^[a-zA-Z0-9\\s%$*+.,/\\-]{1,25}$",
+            "description": "Identificação do título para a empresa beneficiária. Alfanumérico (25)",
+            "example": "RE-201609/1"
+          },
+          "codigo_barras": {
+            "type": "string",
+            "format": "number",
+            "pattern": "^\\d{44}$",
+            "maxLength": 44,
+            "minLength": 44,
+            "description": "Código de barras do título.",
+            "example": "04191808600000500002100100000010588549074094"
+          },
+          "linha_digitavel": {
+            "type": "string",
+            "format": "number",
+            "pattern": "^\\d{47}$",
+            "maxLength": 47,
+            "minLength": 47,
+            "description": "Linha digitável do título.",
+            "example": "04192100180000001058785490740942180860000050000"
+          },
+          "situacao_banrisul": {
+            "type": "string",
+            "pattern": "^(A{1}|B{1}|D{1}|L{1}|R{1}|T{1}|P{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Identifica a situação do boleto no banrisul Alfanumérico (1). Possíveis valores:\n - A = Ativo\n - B = Baixado por pagamento\n - D = Baixado por devolução\n - L = Liquidado\n - R = Reembolsado\n - T = Transferido para CL\n - P = Protestado",
+            "example": "A"
+          },
+          "situacao_cip": {
+            "type": "string",
+            "pattern": "^(A{1}|R{1}|P{1}|E{1}|N{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Identifica a situação do boleto na CIP Alfanumérico (1). Possíveis valores:\n - A = Aprovado\n - R = Rejeitado\n - P = Pendente\n - E = Enviado\n - N = Não centralizado",
+            "example": "R"
+          },
+          "situacao_pagamento": {
+            "type": "number",
+            "pattern": "^([1-7]{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "A Situação Pagamento do título apresenta se título está apto para pagamento ou se há algum bloqueio para sua liquidação. Importante: títulos com \"pagamento em processamento\" apenas demonstram que houve um registro de pagamento na rede bancária, contudo, este pagamento somente é confirmado na compensação noturna. Esta conciliação não é de responsabilidade do Banco Emissor (Banrisul), com isso, não há garantias que este pagamento será efetivado na madrugada.\nPossíveis situações:\n - 1 = Apto para pagamento\n - 2 = Pagamento em processamento\n - 3 = Crédito retido\n - 4 = Baixado no dia\n - 5 = Em processo de devolução automática\n - 6 = Em cartório\n - 7 = Pagamento indisponível, entre em contato com sua agência",
+            "example": 5
+          },
+          "carteira": {
+            "type": "number",
+            "pattern": "^([1-5]{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Identifica a carteira do boleto. Possíveis valores:\n - 1 = Cobrança Simples\n - 2 = Cobrança Vinculada\n - 3 = Cobrança Caucionada\n - 4 = Desconto\n - 5 = Vendor",
+            "example": 4
+          },
+          "beneficiario": {
+            "$ref": "#/components/schemas/Beneficiario"
+          },
+          "pagador": {
+            "$ref": "#/components/schemas/Pagador"
+          },
+          "instrucoes": {
+            "$ref": "#/components/schemas/Instrucoes"
+          },
+          "pag_parcial": {
+            "$ref": "#/components/schemas/PagamentoParcial"
+          },
+          "mensagens": {
+            "description": "Lista de mensagens, no máximo 9.",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 9,
+            "items": {
+              "$ref": "#/components/schemas/Mensagem"
+            }
+          },
+          "rateio": {
+            "$ref": "#/components/schemas/Rateio"
+          },
+          "operacoes": {
+            "$ref": "#/components/schemas/Operacoes"
+          }
+        }
+      },
+      "Beneficiario": {
+        "type": "object",
+        "description": "Informações pertinentes ao beneficiário.",
+        "required": [
+          "codigo",
+          "tipo_pessoa",
+          "cpf_cnpj",
+          "nome",
+          "nome_fantasia"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "format": "number",
+            "maxLength": 13,
+            "pattern": "^\\d{13}$",
+            "description": "Número do convênio. Código completo do Beneficiário, composto por: Número da agência (4 dígitos), código do beneficiário (7 dígitos) e número de controle (2 dígitos). Preenchido com zeros à esquerda cada complemento.",
+            "example": "0010000001088"
+          },
+          "tipo_pessoa": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1,
+            "pattern": "^(F{1}|J{1})$",
+            "description": "Identifica o tipo pessoa. Tipos possíveis:\n - F = Pessoa Física\n - J = Pessoa Jurídica",
+            "example": "J"
+          },
+          "cpf_cnpj": {
+            "type": "string",
+            "format": "number",
+            "minLength": 11,
+            "maxLength": 14,
+            "pattern": "^(\\d{11}|\\d{14})$",
+            "description": "Número do CPF ou CNPJ do beneficário.",
+            "example": "92702067000196"
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[A-Za-z0-9\\s%$*+.,/\\-]{1,60}$",
+            "description": "Nome/Razão Social do beneficiário.",
+            "example": "BANRISUL ATENDIMENTO COBRANCA"
+          },
+          "nome_fantasia": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[A-Za-z0-9\\s%$*+.,/\\-]{1,60}$",
+            "description": "Nome Fantasia do beneficiário.",
+            "example": "BANRISUL ATENDIMENTO COBRANCA"
+          }
+        }
+      },
+      "Pagador": {
+        "type": "object",
+        "description": "Informações do pagador do boleto.",
+        "required": [
+          "tipo_pessoa",
+          "cpf_cnpj",
+          "nome",
+          "endereco",
+          "cep",
+          "cidade",
+          "uf",
+          "aceite"
+        ],
+        "properties": {
+          "tipo_pessoa": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1,
+            "pattern": "^(F{1}|J{1})$",
+            "description": "Identifica o tipo pessoa. Tipos possíveis:\n - F = Pessoa Física\n - J = Pessoa Jurídica",
+            "example": "F"
+          },
+          "cpf_cnpj": {
+            "type": "string",
+            "format": "number",
+            "minLength": 11,
+            "maxLength": 14,
+            "pattern": "^(\\d{11}|\\d{14})$",
+            "description": "Número do CPF ou CNPJ do beneficário.",
+            "example": "67524451091"
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 40,
+            "pattern": "^[A-Za-z0-9\\s%$*+.,/\\-]{1,40}$",
+            "description": "Nome completo do pagador.",
+            "example": "TESTE COBRANCA"
+          },
+          "endereco": {
+            "type": "string",
+            "maxLength": 35,
+            "pattern": "^[A-Za-z0-9\\s%$*+.,/\\-]{1,35}$",
+            "description": "Endereço do pagador.",
+            "example": "RUA CALDAS JUNIOR 120"
+          },
+          "cep": {
+            "type": "string",
+            "format": "number",
+            "minLength": 8,
+            "maxLength": 8,
+            "pattern": "^\\d{8}$",
+            "description": "CEP do endereço do pagador.",
+            "example": "90010260"
+          },
+          "cidade": {
+            "type": "string",
+            "maxLength": 15,
+            "pattern": "^[A-Za-z0-9\\s%$*+.,/\\-]{1,15}$",
+            "description": "Cidade do endereço do pagador.",
+            "example": "PORTO ALEGRE"
+          },
+          "uf": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 2,
+            "pattern": "^[A-Z]{2}$",
+            "description": "Estado do endereço do pagador. Alfanumérico (2)",
+            "example": "RS"
+          },
+          "aceite": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1,
+            "pattern": "^(A{1}|N{1})$",
+            "description": "Código para  identificar se o boleto de cobrança foi aceito (reconhecimento da dívida pelo Pagador). Alfanumérico (1). Domínios:\n - A = Sim\n - N = Não ",
+            "example": "A"
+          }
+        }
+      },
+      "Instrucoes": {
+        "type": "object",
+        "description": "Instruções de pagamento do boleto: juros, multa, desconto, abatimento, protesto e baixa",
+        "required": [
+          "juros"
+        ],
+        "properties": {
+          "juros": {
+            "$ref": "#/components/schemas/Juros"
+          },
+          "multa": {
+            "$ref": "#/components/schemas/Multa"
+          },
+          "desconto": {
+            "$ref": "#/components/schemas/Desconto"
+          },
+          "abatimento": {
+            "$ref": "#/components/schemas/Abatimento"
+          },
+          "protesto": {
+            "$ref": "#/components/schemas/Protesto"
+          },
+          "baixa": {
+            "$ref": "#/components/schemas/Baixa"
+          }
+        }
+      },
+      "Juros": {
+        "type": "object",
+        "description": "Informações do juros.",
+        "required": [
+          "codigo"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "number",
+            "pattern": "^([1-3]{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Código da instrução de juros. Domínios:\n - 1 = Valor por dia\n - 2 = Taxa mensal\n - 3 = Isento",
+            "example": 3
+          },
+          "data": {
+            "type": "string",
+            "format": "date",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+            "description": "Data de início da cobrança de juros no formato: `AAAA-MM-DD`. Quando não houver indicação de data, a cobrança de juros ocorrerá a partir do dia seguinte ao vencimento. Deve ser maior que a data de vencimento.",
+            "example": "2021-01-07"
+          },
+          "valor": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor a ser cobrado de juros com 2 casas decimais. Deve ser preenchido quando o código de Juros for `1` (Valor por dia).",
+            "example": "100000.04"
+          },
+          "taxa": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,3}\\.\\d{2}$",
+            "maxLength": 6,
+            "description": "Percentual sobre o valor do título a ser cobrado de juros. Deve ser preenchido quando código de Juros for `2` (Taxa mensal).",
+            "example": "1.04"
+          }
+        }
+      },
+      "Multa": {
+        "type": "object",
+        "description": "Informações da instrução de multa.",
+        "required": [
+          "codigo"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "number",
+            "pattern": "^([1-2]{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Código da instrução de Multa. Domínios:\n - 1 = Valor Fixo\n - 2 = Percentual",
+            "example": 1
+          },
+          "data": {
+            "type": "string",
+            "format": "date",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+            "description": "Data de início da cobrança de multa no formato: `AAAA-MM-DD`. Quando não houver indicação de data, a cobrança da multa ocorrerá a partir do dia seguinte ao vencimento. Deve ser maior que a Data de Vencimento.",
+            "example": "2021-01-07"
+          },
+          "valor": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor a ser cobrado de multa. Deve ser preenchido quando código de Multa for `1` (Valor Fixo).",
+            "example": "100.04"
+          },
+          "taxa": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,4}\\.\\d{1}$",
+            "maxLength": 6,
+            "description": "Percentual sobre o valor do título a ser cobrado de multa. Deve ser preenchido quando código de Multa for `2` (Percentual).",
+            "example": "0.4"
+          }
+        }
+      },
+      "Desconto": {
+        "type": "object",
+        "description": "Informações da instrução de desconto.",
+        "required": [
+          "codigo"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "number",
+            "pattern": "^([1-3]{1}|5{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Código da instrução de desconto. Domínios:\n - 1 = Valor fixo até a data\n - 2 = Percentual até a data\n - 3 = Valor por antecipação dia corrido\n - 5 = Percentual sobre o valor nominal dia corrido",
+            "example": 3
+          },
+          "data": {
+            "type": "string",
+            "format": "date",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+            "description": "Data limite para conceder o desconto no formato: `AAAA-MM-DD`. Quando não houver indicação de data, a concessão do desconto ocorrerá até o dia do vencimento. Deve ser menor ou igual a Data de Vencimento. Deve ser maior ou igual a Data de Emissão.",
+            "example": "2021-01-07"
+          },
+          "valor": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor de desconto a ser concedido sobre o título. Deve ser preenchido quando o código de Desconto for `1` (Valor fixo até a data) ou `3` (Valor por antecipação dia corrido).",
+            "example": "6.95"
+          },
+          "taxa": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,3}\\.\\d{2}$",
+            "maxLength": 6,
+            "description": "Percentual de desconto a ser concedido sobre o título. Deve ser preenchido quando o código de Desconto for `2` (Percentual até a data) ou `5` (Percentual sobre o valor nominal dia corrido).",
+            "example": "0.45"
+          }
+        }
+      },
+      "Abatimento": {
+        "type": "object",
+        "description": "Informações da instrução de abatimento.",
+        "required": [
+          "valor"
+        ],
+        "properties": {
+          "valor": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor do abatimento.",
+            "example": "6.80"
+          }
+        }
+      },
+      "Protesto": {
+        "type": "object",
+        "description": "Informações da instrução de protesto.",
+        "required": [
+          "codigo"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "number",
+            "pattern": "^(1{1}|3{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Código da instrução de protesto. Domínios:\n - 1 = Protestar dias corridos\n - 3 = Não protestar",
+            "example": 3
+          },
+          "prazo": {
+            "type": "number",
+            "maxLength": 2,
+            "pattern": "^\\d{1,2}$",
+            "description": "Número de dias corridos após a data de vencimento para inicialização do processo de cobrança via protesto. Deve ser preenchido quando o código do Protesto for `1` (Protestar dias corridos). Prazo 0 é protesto imediato e só será aceito para títulos já vencidos. Para títulos que ainda não venceram o Prazo tem que ser maior ou igual a 3.",
+            "example": 30
+          }
+        }
+      },
+      "Baixa": {
+        "type": "object",
+        "description": "Informações da instrução de baixa.",
+        "required": [
+          "codigo",
+          "prazo"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "number",
+            "pattern": "^(1)$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Código da instrução de baixa. Domínios:\n - 1 = Baixar / Devolver",
+            "example": 1
+          },
+          "prazo": {
+            "type": "number",
+            "maxLength": 2,
+            "pattern": "^\\d{1,2}$",
+            "description": "Número de dias corridos após a data de vencimento, que deverá ser baixado/devolvido para o Beneficiário.",
+            "example": 30
+          }
+        }
+      },
+      "PagamentoParcial": {
+        "type": "object",
+        "description": "Informações do pagamento parcial.",
+        "required": [
+          "autoriza",
+          "codigo"
+        ],
+        "properties": {
+          "autoriza": {
+            "type": "number",
+            "pattern": "^([1-2]{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Identifica se o pagamento parcial esta autorizado. Deve ser sempre preenchido com `1`, exceto quando a espécie for `31` (Cartão de Crédito). Domínios:\n - 1 = Não autoriza pagamento parcial\n - 2 = Autoriza pagamento parcial",
+            "example": 1
+          },
+          "codigo": {
+            "type": "number",
+            "minLength": 1,
+            "maxLength": 1,
+            "pattern": "^([1-3]{1})$",
+            "description": "Código do tipo de pagamento parcial. Domínios:\n - 1 = Aceita qualquer valor\n - 2 = Valor entre mínimo e máximo\n - 3 = Não aceita valor divergente.",
+            "example": 3
+          },
+          "quantidade": {
+            "type": "number",
+            "maxLength": 2,
+            "pattern": "^\\d{1,2}$",
+            "description": "Quantidade de pagamentos parciais possíveis. Deve ser preenchido quando autoriza for `2` (Autoriza pagamento parcial).",
+            "example": 3
+          },
+          "tipo": {
+            "type": "number",
+            "minLength": 1,
+            "maxLength": 1,
+            "pattern": "^([1-2]{1})$",
+            "description": "Tipo do pagamento parcial. Deve ser preenchido quando o código for `2` (Valor entre mínimo e máximo). Domínios:\n - 1 = Percentual\n - 2 = Valor",
+            "example": 1
+          },
+          "valor_min": {
+            "type": "string",
+            "format": "double",
+            "maxLength": 16,
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "description": "Valor mínimo para pagamento parcial. Deve ser preenchido quando o código for `2` (Valor entre mínimo e máximo) e tipo for `2` (Valor).",
+            "example": "18.30"
+          },
+          "valor_max": {
+            "type": "string",
+            "format": "double",
+            "maxLength": 16,
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "description": "Valor máximo para pagamento parcial. Deve ser preenchido quando o código for `2` (Valor entre mínimo e máximo) e tipo for `2` (Valor).",
+            "example": "18.30"
+          },
+          "percentual_min": {
+            "type": "string",
+            "format": "double",
+            "maxLength": 6,
+            "pattern": "^-?\\d{1,3}\\.\\d{2}$",
+            "description": "Percentual mínimo sobre o valor do título para pagamento parcial. Deve ser preenchido quando o código for `2` (Valor entre mínimo e máximo) e tipo for `1` (Percentual).",
+            "example": "18.30"
+          },
+          "percentual_max": {
+            "type": "string",
+            "format": "double",
+            "maxLength": 6,
+            "pattern": "^-?\\d{1,3}\\.\\d{2}$",
+            "description": "Percentual máximo sobre o valor do título para pagamento parcial. Deve ser preenchido quando o código for `2` (Valor entre mínimo e máximo) e tipo for `1` (Percentual).",
+            "example": "18.30"
+          }
+        }
+      },
+      "Mensagem": {
+        "type": "object",
+        "description": "Informações da mensagem do boleto.",
+        "required": [
+          "linha",
+          "texto"
+        ],
+        "properties": {
+          "linha": {
+            "type": "number",
+            "pattern": "^([1-9]{1})$",
+            "minLength": 1,
+            "maxLength": 1,
+            "description": "Linha da mensagem. Valores entre 1 e 9. O boleto poderá apresentar no máximo 9 linhas no campo \"observações\". Desta forma, caso sejam cadastradas instruções no título ou existam instruções permanentes cadastradas para o beneficiário, estas terão prioridade na exibição. As mensagens serão informadas posteriormente, conforme houver espaço disponível.",
+            "example": 3
+          },
+          "texto": {
+            "type": "string",
+            "maxLength": 75,
+            "pattern": "^[A-Za-z0-9\\s%$*+.:,/()\\-]{1,75}$",
+            "description": "Texto da mensagem.",
+            "example": "Exemplo de mensagem"
+          }
+        }
+      },
+      "Rateio": {
+        "type": "object",
+        "description": "Informações pertinentes ao rateio com uma lista de beneficiários.",
+        "required": [
+          "codigo",
+          "tipo_valor",
+          "beneficiarios"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "number",
+            "minLength": 1,
+            "maxLength": 1,
+            "pattern": "^([1-2]{1})$",
+            "description": "Código para o tipo de rateio. Domínios:\n - 1 = Valor cobrado do pagador\n - 2 = Valor registrado do título.",
+            "example": 1
+          },
+          "tipo_valor": {
+            "type": "number",
+            "minLength": 1,
+            "maxLength": 1,
+            "pattern": "^([1-2]{1})$",
+            "description": "Identifica o tipo do valor do rateio. Deve ser `1` (Percentual) quando Código do Rateio for `1` (Valor cobrado do Pagador). Domínios:\n - 1 = Percentual\n - 2 = Valor",
+            "example": 2
+          },
+          "beneficiarios": {
+            "type": "array",
+            "description": "Informações dos beneficiários secundários e valores de rateio.",
+            "minItems": 1,
+            "maxItems": 3,
+            "items": {
+              "$ref": "#/components/schemas/BeneficiarioSecundario"
+            }
+          }
+        }
+      },
+      "BeneficiarioSecundario": {
+        "type": "object",
+        "description": "Informações do beneficiário secundário e valores de rateio nos atributos.",
+        "required": [
+          "codigo"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "format": "number",
+            "maxLength": 13,
+            "minLength": 13,
+            "pattern": "^\\d{13}$",
+            "description": "Código completo do beneficiário secundário, composto por: Número da agência (4 dígitos), código do beneficiário (7 dígitos) e número de controle (2 dígitos). Preenchido com zeros à esquerda cada complemento.",
+            "example": "0010000001088"
+          },
+          "tipo_pessoa": {
+            "type": "string",
+            "maxLength": 1,
+            "minLength": 1,
+            "pattern": "^(F{1}|J{1})$",
+            "description": "Tipo pessoa. Domínios:\n - F = Pessoa Física\n - J = Pessoa Jurídica",
+            "example": "J"
+          },
+          "cpf_cnpj": {
+            "type": "string",
+            "maxLength": 14,
+            "minLength": 11,
+            "pattern": "^(\\d{11}|\\d{14})$",
+            "description": "Número do CPF ou CNPJ.",
+            "example": "92702067000196"
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[A-Za-z0-9\\s%$*+.,/\\-]{1,60}$",
+            "description": "Nome/Razão Social do beneficiário.",
+            "example": "Nome Teste"
+          },
+          "nome_fantasia": {
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[A-Za-z0-9\\s%$*+.,/\\-]{1,60}$",
+            "description": "Nome Fantasia do beneficiário.",
+            "example": "Nome Teste"
+          },
+          "valor": {
+            "type": "string",
+            "format": "double",
+            "maxLength": 16,
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "description": "Valor do rateio. Deve ser preenchido quando o Tipo Valor do Rateio for `2` (Valor).",
+            "example": "16.25"
+          },
+          "percentual": {
+            "type": "string",
+            "format": "double",
+            "maxLength": 7,
+            "pattern": "^-?\\d{1,3}\\.\\d{3}$",
+            "description": "Percentual do rateio. Deve ser preenchido quando o Tipo Valor do Rateio for `1` (Percentual).",
+            "example": "16.253"
+          },
+          "parcela": {
+            "type": "number",
+            "maxLength": 4,
+            "pattern": "^\\d{1,4}$",
+            "description": "Número da parcela do rateio.",
+            "example": 2
+          }
+        }
+      },
+      "Operacoes": {
+        "type": "object",
+        "description": "Informações sobre operações realizadas sobre o título. Serão retornadas informações sobre a última data (mais recente) com a ocorrência.",
+        "properties": {
+          "data_baixa": {
+            "type": "string",
+            "format": "date",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+            "description": "Data de baixa do título no formato: `AAAA-MM-DD`.",
+            "example": "2021-01-07"
+          },
+          "data_pagamento": {
+            "type": "string",
+            "format": "date",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+            "description": "Data de pagamento do título no formato: `AAAA-MM-DD`.",
+            "example": "2021-01-07"
+          },
+          "data_credito": {
+            "type": "string",
+            "format": "date",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+            "description": "Data de crédito na conta do beneficiário no formato: `AAAA-MM-DD`.",
+            "example": "2021-01-07"
+          },
+          "data_reembolso": {
+            "type": "string",
+            "format": "date",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^(\\d{4})-(0[1-9]|1[0-2])-(3[01]|[12][0-9]|0[1-9])$",
+            "description": "Data de reembolso na conta do beneficiário no formato: `AAAA-MM-DD`.",
+            "example": "2021-01-07"
+          },
+          "valor_juros_recebido": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor de juros acrescido do pagador e recebido pelo beneficiário.",
+            "example": "100.04"
+          },
+          "valor_juros_pago": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor de juros pago pelo beneficiário.",
+            "example": "100.04"
+          },
+          "valor_multa_recebido": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor de multa acrescido do pagador e recebido pelo beneficiário.",
+            "example": "100.04"
+          },
+          "valor_desconto_utilizado": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor de desconto utilizado pelo pagador.",
+            "example": "100.04"
+          },
+          "valor_abatimento_utilizado": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor de abatimento utilizado pelo pagador.",
+            "example": "100.04"
+          },
+          "valor_iof": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor de IOF.",
+            "example": "100.04"
+          },
+          "custas_cartorio": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Custas de cartório cobradas do beneficiário.",
+            "example": "100.04"
+          },
+          "ressarcimento_cartorio": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Ressarcimento de cartório ao beneficiário.",
+            "example": "100.04"
+          },
+          "tarifa_registro": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Tarifa de registro do título.",
+            "example": "100.04"
+          },
+          "tarifa_baixa_liquidacao": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Tarifa de baixa/liquidação do título.",
+            "example": "100.04"
+          },
+          "tarifa_aponte_cartorio": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Tarifa de aponte ao cartório do título.",
+            "example": "100.04"
+          },
+          "tarifa_interbancaria": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Tarifa interbancária (título pago via compensação).",
+            "example": "100.04"
+          },
+          "tarifa_manutencao_mensal": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Tarifa de manutenção mensal do título.",
+            "example": "100.04"
+          },
+          "tarifa_sustacao": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Tarifa de sustação de título.",
+            "example": "100.04"
+          },
+          "tarifas_diversas": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Tarifas de cartório, baixa/liquidação ou interbancária do título agrupadas.",
+            "example": "100.04"
+          },
+          "valor_pagamento": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor de pagamento do título, referente ao valor nominal.",
+            "example": "100.04"
+          },
+          "valor_reembolso": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor de reembolso do título.",
+            "example": "100.04"
+          },
+          "valor_cobrado": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor cobrado do pagador.",
+            "example": "100.04"
+          },
+          "valor_creditado_debitado": {
+            "type": "string",
+            "format": "double",
+            "pattern": "^-?\\d{1,13}\\.\\d{2}$",
+            "maxLength": 16,
+            "description": "Valor creditado/debitado do beneficiário.",
+            "example": "100.04"
+          }
+        }
+      },
+      "Ocorrencia": {
+        "type": "object",
+        "description": "Ocorrência de erro.",
+        "required": [
+          "codigo",
+          "mensagem"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "maxLength": 20,
+            "pattern": "^[A-Za-z0-9\\s%$*+.,/\\-]{1,20}$",
+            "description": "Código do erro.",
+            "example": "54"
+          },
+          "mensagem": {
+            "type": "string",
+            "maxLength": 150,
+            "pattern": "^[A-Za-záàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ0-9\\s\\'%$#*+^\\_.,:;|\\{\\}\\(\\)/\\-]{1,150}$",
+            "description": "Descrição do erro.",
+            "example": "Erro XXX."
+          },
+          "complemento": {
+            "type": "string",
+            "maxLength": 20,
+            "pattern": "^[A-Za-z0-9\\s%$*+.,/\\-]{1,20}$",
+            "description": "Complemento para identificação de um erro específico.",
+            "example": "OC4B0004"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "description": "Fluxo de Autorização **OAuth2 Client Credentials**. \n\nURL para geração dos Tokens de Acesso necessários para autorizar as suas requisições para as APIs. \n\n**O Token precisa estar presente no cabeçalho Authorization de cada requisição.**\n\nExemplo: `\"Authorization: Bearer b34752d9-bf05-4c4c-a65e-491f935c6903\"`\n\nPara mais informações, verifique a seção de [Segurança](#section/Seguranca) deste documento.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://apidev.banrisul.com.br/auth/oauth/v2/token",
+            "scopes": {
+              "boletos": "Permite consultar detalhes de boletos de cobrança."
+            },
+            "refreshUrl": "https://apidev.banrisul.com.br/auth/oauth/v2/token"
+          }
+        }
+      }
+    }
+  }
+}
